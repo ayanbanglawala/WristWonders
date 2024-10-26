@@ -1,8 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
+import connectDB from "./config/db.js";
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+connectDB();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.get("/",(req,res)=>{
     res.send("Hello World");

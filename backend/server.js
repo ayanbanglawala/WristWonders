@@ -2,7 +2,9 @@ import express from "express";
 import mongoose from "mongoose";
 import connectDB from "./config/db.js";
 import dotenv from 'dotenv';
+
 import authRoutes from "./routes/auth.route.js";
+import products from "./routes/product.route.js";
 
 dotenv.config();
 
@@ -17,6 +19,7 @@ app.get("/",(req,res)=>{
 })
 
 app.use("/auth/user", authRoutes)
+app.use("/auth/products", products)
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

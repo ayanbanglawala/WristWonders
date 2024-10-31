@@ -5,6 +5,10 @@ const product = new mongoose.Schema({
         type: String,
         required: true
     },
+    seller:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"  // Assuming User is the model name
+    },
     brand:{
         type: String,
         required: true
@@ -29,4 +33,5 @@ const product = new mongoose.Schema({
     timestamps: true,
 })
 
-export default mongoose.model("Product", product);
+const Product = mongoose.model("Product", product);
+export default Product;

@@ -14,18 +14,22 @@ export const logout = async (req, res) => {
 export const signup = async (req, res) => {
     console.log(req.body);
     try {
-        const { fName, lName, email, password, cPassword, phone } = req.body;
+        const { fName, lName, email, password, cPassword, phone, isAdmin } = req.body;
         if (password != cPassword) {
             return res.status(400).json({ error: "Passwords do not match" });
         }
 
-        const user = await User.findOne({ email });
-        if (user) {
-            return res.status(400).json({ error: "User already exists" });
+        const emailExist = await User.findOne({ email });
+        if (emailExist) {
+            return res.status(400).json({ error: "Email already exists" });
+        }
+        const phoneExist = await User.findOne({ phone });
+        if (phoneExist) {
+            return res.status(400).json({ error: "Phone Number already exists" });
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const newUser = new User({ fName, lName, email, password: hashedPassword, phone });
+        const newUser = new User({ fName, lName, email, password: hashedPassword, phone, isAdmin });
         if (newUser) {
             generateTokenAndSetCookie(newUser._id, res);
             await newUser.save();

@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/addProduct", protectRoute, addProduct);
 router.get("/getProduct", protectRoute, getProducts);
-router.patch("/updateProduct", protectRoute, updateProduct);
-router.delete("/deleteProduct", protectRoute, deleteProduct);
-
+router.patch("/updateProduct/:id", protectRoute, updateProduct);
+router.delete("/deleteProduct/:id", protectRoute, deleteProduct);
+ 
 export default router;

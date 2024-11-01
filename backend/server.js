@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import authRoutes from "./routes/auth.route.js";
 import products from "./routes/productAdmin.route.js";
 import allProducts from "./routes/products.route.js";
+import cart from "./routes/cart.route.js";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.get("/",(req,res)=>{
 app.use("/api/auth", authRoutes)
 app.use("/api/admin", products)
 app.use("/api/products", allProducts)
+app.use("/api/cart", cart)
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

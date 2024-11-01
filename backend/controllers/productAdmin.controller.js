@@ -1,13 +1,13 @@
-import Product from "../models/productAdmin.model.js";
+import Product from "../models/product.model.js";
 import User from "../models/user.model.js";
 
 export const addProduct = async (req, res) => {
     try {
         const sellerId = req.user._id;
-        const { name, brand, price, description, stock, images } = req.body;
+        const { name, brand, price, description, stock, images, category } = req.body;
         
-        if (!name || !price || !description || !stock || !images || !brand || !sellerId) {
-            return res.status(400).json({ message: "Name, price, description, and stock are required" });
+        if (!name || !price || !description || !stock || !images || !brand || !sellerId || !category) {
+            return res.status(400).json({ message: "All fields are required" });
         }
         const user = User.findOne(sellerId);
         if (!user) {
@@ -24,13 +24,14 @@ export const addProduct = async (req, res) => {
             price,
             description,
             stock,
-            images
+            images,
+            category
         });
         await product.save();
         res.status(201).json({ message: "Product added successfully" });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ error: "Server Error" });
     }
 };
 
@@ -88,9 +89,13 @@ export const updateProduct = async(req,res)=>{
         if (product.seller.toString()!== sellerId) {
             return res.status(401).json({ message: "Unauthorized" });
         }
-        const { name, brand, price, description, stock, images } = req.body;
-        if (!name ||!price ||!description ||!stock ||!images ||!brand) {
+        const { name, brand, price, description, stock, images, category } = req.body;
+        if (!name ||!price ||!description ||!stock ||!images ||!brand || !category) {
             return res.status(400).json({ message: "Name, price, description, and stock are required" });
+        }
+        const isExist = await Product.findOne({name, _id: { $ne: productId }});
+        if (isExist) {
+            return res.status(400).json({ message: "Product already exists" });
         }
         product.name = name;
         product.brand = brand;
@@ -98,6 +103,7 @@ export const updateProduct = async(req,res)=>{
         product.description = description;
         product.stock = stock;
         product.images = images;
+        product.category = category
         await product.save();
         res.json({ message: "Product updated successfully", product});
     } catch (error) {

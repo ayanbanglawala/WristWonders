@@ -135,17 +135,27 @@ export const getCategories = async (req, res) => {
     }
 }
 
+import mongoose from 'mongoose';
+
 export const deleteCategory = async (req, res) => {
     try {
         const id = req.params.id;
+
+        // Check if the ID is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid category ID format' });
+        }
+
+        // Attempt to find and delete the category
         const category = await Category.findByIdAndDelete(id);
 
         if (!category) {
             return res.status(404).json({ message: 'Category not found' });
         }
+
         res.status(200).json({ message: 'Deleted category' });
     } catch (error) {
-        console.error(error);
+        console.error("Error deleting category:", error);
         res.status(500).json({ error: 'Failed to delete category' });
     }
-}
+};

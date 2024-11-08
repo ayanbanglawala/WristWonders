@@ -29,7 +29,7 @@ export const signup = async (req, res) => {
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const newUser = new User({ fName, lName, email, password: hashedPassword, phone, isAdmin });
+        const newUser = new User({ fName, lName, email, password: hashedPassword, phone, isAdmin, addresses: [] });
         if (newUser) {
             generateTokenAndSetCookie(newUser._id, res);
             await newUser.save();
@@ -39,6 +39,7 @@ export const signup = async (req, res) => {
                 lName: newUser.lName,
                 email: newUser.email,
                 phone: newUser.phone,
+                addresses: newUser.addresses,
                 token: generateTokenAndSetCookie(newUser._id, res),
             })
         }
@@ -74,10 +75,10 @@ export const login = async (req, res) => {
     }
 }
 
-export const profile = async(req, res)=>{
+export const profile = async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
-        
+
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -88,7 +89,7 @@ export const profile = async(req, res)=>{
     }
 }
 
-export const profileUpdate = async (req, res)=>{
+export const profileUpdate = async (req, res) => {
     try {
         const user = await User.findOne(req.user._id);
         if (!user) {
@@ -101,7 +102,69 @@ export const profileUpdate = async (req, res)=>{
         user.phone = phone;
 
         await user.save();
-        res.status(200).json({message:"User updated successfully!"});
+        res.status(200).json({ message: "User updated successfully!" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server Error");
+    }
+}
+
+export const addAddress = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        const { street, city, state, country, zipCode, isPrimary } = req.body;
+        if (!street || !city || !state || !country || !zipCode || !isPrimary) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
+        user.addresses.push({ street, city, state, country, zipCode, isPrimary });
+        await user.save();
+        res.status(201).json({ message: "Address added successfully!" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server Error");
+    }
+}
+
+export const updateAddress = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        const addressId = req.params.id;
+        const { street, city, state, country, zipCode, isPrimary } = req.body;
+        const addressIndex = user.addresses.findIndex(address => address._id.toString() === addressId);
+        if (addressIndex === -1) {
+            return res.status(404).json({ error: "Address not found" });
+        }
+        user.addresses[addressIndex] = { street, city, state, country, zipCode, isPrimary };
+        await user.save();
+
+        res.status(200).json({ message: "Address updated successfully!" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server Error");
+    }
+}
+
+export const deleteAddress = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        const addressId = req.params.id;
+        const addressIndex = user.addresses.findIndex(address => address._id.toString() === addressId);
+        if (addressIndex === -1) {
+            return res.status(404).json({ error: "Address not found" });
+        }
+        user.addresses.splice(addressIndex, 1);
+        await user.save();
+        res.status(200).json({ message: "Address deleted successfully!" });
+
     } catch (error) {
         console.error(error);
         res.status(500).send("Server Error");

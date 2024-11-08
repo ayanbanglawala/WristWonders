@@ -26,7 +26,15 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    }
+    },
+    addresses: [{
+        street: { type: String, required: false },
+        city: { type: String, required: false },
+        state: { type: String, required: false },
+        country: { type: String, required: false },
+        zipCode: { type: String, required: false },
+        isPrimary: { type: Boolean, default: false } // Indicating the default shipping address
+    }]
 }, { timestamps: true })
 
 const User = mongoose.model("User", userSchema);

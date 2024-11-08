@@ -1,3 +1,4 @@
+import Category from "../models/categories.model.js";
 import Product from "../models/product.model.js";
 import User from "../models/user.model.js";
 
@@ -5,7 +6,7 @@ export const addProduct = async (req, res) => {
     try {
         const sellerId = req.user._id;
         const { name, brand, price, description, stock, images, category } = req.body;
-        
+
         if (!name || !price || !description || !stock || !images || !brand || !sellerId || !category) {
             return res.status(400).json({ message: "All fields are required" });
         }
@@ -55,7 +56,7 @@ export const getProducts = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
     try {
-        const sellerId = req.user._id.toString(); 
+        const sellerId = req.user._id.toString();
         const productId = req.params.id;
 
         const product = await Product.findById(productId);
@@ -78,7 +79,7 @@ export const deleteProduct = async (req, res) => {
     }
 };
 
-export const updateProduct = async(req,res)=>{
+export const updateProduct = async (req, res) => {
     try {
         const sellerId = req.user._id.toString();
         const productId = req.params.id;
@@ -86,14 +87,14 @@ export const updateProduct = async(req,res)=>{
         if (!product) {
             return res.status(404).json({ message: "Product not found" });
         }
-        if (product.seller.toString()!== sellerId) {
+        if (product.seller.toString() !== sellerId) {
             return res.status(401).json({ message: "Unauthorized" });
         }
         const { name, brand, price, description, stock, images, category } = req.body;
-        if (!name ||!price ||!description ||!stock ||!images ||!brand || !category) {
+        if (!name || !price || !description || !stock || !images || !brand || !category) {
             return res.status(400).json({ message: "Name, price, description, and stock are required" });
         }
-        const isExist = await Product.findOne({name, _id: { $ne: productId }});
+        const isExist = await Product.findOne({ name, _id: { $ne: productId } });
         if (isExist) {
             return res.status(400).json({ message: "Product already exists" });
         }
@@ -105,9 +106,46 @@ export const updateProduct = async(req,res)=>{
         product.images = images;
         product.category = category
         await product.save();
-        res.json({ message: "Product updated successfully", product});
+        res.json({ message: "Product updated successfully", product });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error" });
+    }
+}
+
+export const addCategory = async (req, res) => {
+    try {
+        const { name } = req.body;
+        const newCategory = new Category({ name });
+        await newCategory.save();
+        res.status(201).json({ message: 'Added category' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to add category' });
+    }
+}
+
+export const getCategories = async (req, res) => {
+    try {
+        const categories = await Category.find();
+        res.status(201).json(categories);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to get categories' });
+    }
+}
+
+export const deleteCategory = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const category = await Category.findByIdAndDelete(id);
+
+        if (!category) {
+            return res.status(404).json({ message: 'Category not found' });
+        }
+        res.status(200).json({ message: 'Deleted category' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to delete category' });
     }
 }

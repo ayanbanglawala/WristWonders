@@ -8,7 +8,7 @@ const product = new mongoose.Schema({
     stock: { type: Number, default: 0 },
     images: [{ type: String }],
     seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    category: { type: String },
+    category: [{ type: String }],
     ratings: { type: Number, default: 0 },
     numReviews: { type: Number, default: 0 },
 }, {

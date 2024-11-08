@@ -1,3 +1,4 @@
+import Category from "../models/categories.model.js";
 import Product from "../models/product.model.js";
 
 export const productsAll = async(req,res)=>{
@@ -52,4 +53,5 @@ export const searchQuery = async (req, res) => {
       console.error(error);
       res.status(500).json({ error: 'Failed to search for products' });
     }
-  };
+};
+

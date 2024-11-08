@@ -4,8 +4,8 @@ import { productById, productsAll, searchQuery } from "../controllers/products.c
 const router = express.Router();
 
 // Define the search route first
-router.get('/search', searchQuery);
 router.get("/", productsAll);
+router.get('/search', searchQuery);
 router.get("/:id", productById);
 
 export default router;

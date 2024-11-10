@@ -8,34 +8,48 @@ export const placeOrder = async (req, res) => {
         const userId = req.user._id;
 
         const cartOfUser = await Cart.findOne({ user: userId }).populate({
-            path: "cartItems.product", // Populate the product field inside cartItems
-            select: "price" // Only select the price field for calculating the total amount
+            path: "cartItems.product",
+            select: "price stock name" // Select both price and stock fields for checking stock and calculating the total amount
         });
 
         if (!cartOfUser) {
             return res.status(404).json({ message: "Cart not found for this user." });
         }
 
+        // Check stock availability for each item in the cart
+        for (const item of cartOfUser.cartItems) {
+            if (item.product.stock < item.quantity) {
+                return res.status(404).json({ message: `The product ${item.product.name} is currently out of stock!` });
+            }
+        }
+
+        // Calculate total amount
         const totalAmount = cartOfUser.cartItems.reduce((acc, item) => {
-            const product = item.product; // Get the populated product
-            return acc + (product.price * item.quantity); // Add the total for this item
+            return acc + (item.product.price * item.quantity);
         }, 0);
 
+        // Prepare order items
         const orderItems = cartOfUser.cartItems.map(item => ({
-            product: item.product._id, // Product ID
-            quantity: item.quantity,   // Quantity of the product
+            product: item.product._id,
+            quantity: item.quantity,
         }));
 
-        const address = req.user.addresses
-            .filter(item => item.isPrimary) // Filter for the primary address
-            .map(item => ({
-                street: item.street,
-                city: item.city,
-                state: item.state,
-                country: item.country,
-                zipCode: item.zipCode
-            }))[0]; // Return the first primary address, or undefined if not found
+        // Check for primary address
+        const address = req.user.addresses.find(item => item.isPrimary);
+        if (!address) {
+            return res.status(404).json({ message: "No primary address available. Please set a primary address." });
+        }
 
+        // Update stock after confirming all items are in stock
+        for (const item of cartOfUser.cartItems) {
+            await Product.findByIdAndUpdate(
+                item.product._id,
+                { $inc: { stock: -item.quantity } },
+                { new: true }
+            );
+        }
+
+        // Create the order
         const order = await Order.create({
             user: userId,
             orderItems,
@@ -47,23 +61,20 @@ export const placeOrder = async (req, res) => {
                 country: address.country,
                 zipCode: address.zipCode
             },
-            totalAmount
         });
-        for (const item of cartOfUser.cartItems) {
-            await Product.findByIdAndUpdate(
-                item.product._id,
-                { $inc: { stock: -item.quantity } }, // Decrease stock by ordered quantity
-                { new: true }
-            );
-        }
 
-        await Cart.findByIdAndDelete(cartOfUser._id); // Delete the cart after placing the order
+        // Clear the cart after placing the order
+        await Cart.findByIdAndDelete(cartOfUser._id);
+
+        // Send success response
         return res.status(201).json(order);
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error placing order" });
     }
 };
+
 
 
 
@@ -124,3 +135,36 @@ export const updateOrderStatus = async (req, res) => {
         res.status(500).json({ message: "Error updating order status" });
     }
 }
+
+export const setPrimaryAddress = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        const { addressId } = req.body; // Assuming addressId is sent in the request body to set as primary
+
+        // Set all addresses to not primary
+        user.addresses.forEach((address) => {
+            address.isPrimary = false;
+        });
+
+        // Find the address to set as primary
+        const primaryAddress = user.addresses.find(address => address._id.toString() === addressId);
+
+        if (!primaryAddress) {
+            return res.status(404).json({ message: "Address not found." });
+        }
+
+        primaryAddress.isPrimary = true; // Set the selected address as primary
+
+        await user.save(); // Save the user with updated addresses
+
+        res.status(200).json({ message: "Primary address updated successfully.", addresses: user.addresses });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error setting primary address." });
+    }
+};

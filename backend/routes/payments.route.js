@@ -1,8 +1,9 @@
 import express from "express";
 import protectRoute from "../middlewears/protectroute.js";
-import { initiatePayment, verifyPayment } from "../controllers/payments.controller.js";
+import { getPayment, initiatePayment, verifyPayment } from "../controllers/payments.controller.js";
 const router = express.Router();
 
-router.post("/initiate", protectRoute, initiatePayment);
-router.post("/verify", protectRoute, verifyPayment);
+router.post("/initiate", initiatePayment);
+router.post("/verify", verifyPayment);
+router.get("/:paymentId", getPayment);
 export default router;

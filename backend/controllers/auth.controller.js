@@ -14,7 +14,7 @@ export const logout = async (req, res) => {
 export const signup = async (req, res) => {
     console.log(req.body);
     try {
-        const { fName, lName, email, password, cPassword, phone, isAdmin } = req.body;
+        const { fName, lName, email, password, cPassword, phone } = req.body;
         if (password != cPassword) {
             return res.status(400).json({ error: "Passwords do not match" });
         }
@@ -29,7 +29,7 @@ export const signup = async (req, res) => {
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const newUser = new User({ fName, lName, email, password: hashedPassword, phone, isAdmin, addresses: [] });
+        const newUser = new User({ fName, lName, email, password: hashedPassword, phone, addresses: [] });
         if (newUser) {
             generateTokenAndSetCookie(newUser._id, res);
             await newUser.save();
@@ -116,7 +116,7 @@ export const addAddress = async (req, res) => {
             return res.status(404).json({ error: "User not found" });
         }
         const { street, city, state, country, zipCode, isPrimary } = req.body;
-        if (!street || !city || !state || !country || !zipCode || !isPrimary) {
+        if (!street || !city || !state || !country || !zipCode ) {
             return res.status(400).json({ error: "All fields are required" });
         }
         user.addresses.push({ street, city, state, country, zipCode, isPrimary });
@@ -140,10 +140,11 @@ export const updateAddress = async (req, res) => {
         if (addressIndex === -1) {
             return res.status(404).json({ error: "Address not found" });
         }
-        user.addresses[addressIndex] = { street, city, state, country, zipCode, isPrimary };
+        const addressIsPrimary = user.addresses[addressIndex].isPrimary;
+        user.addresses[addressIndex] = { street, city, state, country, zipCode, isPrimary:addressIsPrimary };
         await user.save();
 
-        res.status(200).json({ message: "Address updated successfully!" });
+        res.status(200).json({ message: "Address updated successfully!", addressIsPrimary });
     } catch (error) {
         console.error(error);
         res.status(500).send("Server Error");

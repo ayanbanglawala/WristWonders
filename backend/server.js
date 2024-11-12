@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import connectDB from "./config/db.js";
 import dotenv from 'dotenv';
 import cors from "cors";
-
+import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.route.js";
 import products from "./routes/productAdmin.route.js";
@@ -12,7 +12,7 @@ import cart from "./routes/cart.route.js";
 import orders from "./routes/orders.route.js";
 import payments from "./routes/payments.route.js";
 import review from "./routes/review.route.js";
-import cookieParser from "cookie-parser";
+
 
 dotenv.config();
 

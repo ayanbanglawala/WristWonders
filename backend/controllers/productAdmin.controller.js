@@ -53,6 +53,21 @@ export const getProducts = async (req, res) => {
     }
 };
 
+export const getAllProducts = async (req, res) => {
+    try {
+        const products = await Product.find();
+
+        if (products.length === 0) {
+            return res.status(404).json({ message: "No products found" });
+        }
+
+        res.json(products);  // This will only run if products are found
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+    }
+};
+
 
 export const deleteProduct = async (req, res) => {
     try {

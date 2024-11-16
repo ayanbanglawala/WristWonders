@@ -11,7 +11,7 @@ const Main = () => {
                 <div className="hero-content flex-col lg:flex-row bg-white">
                     <img
                         src={mainImage}
-                        className="max-w-xs lg:max-w-lg rounded-lg " />
+                        className="max-w-xs lg:max-w-md rounded-lg " />
                     <div>
                         <h1 className="text-5xl font-bold stylish text-[60px]">new</h1>
                         <h1 className="text-5xl font-bold">Omega Watch Series 4</h1>

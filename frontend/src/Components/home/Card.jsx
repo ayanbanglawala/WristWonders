@@ -1,19 +1,85 @@
 import React from "react";
+import { LuShoppingCart } from "react-icons/lu";
+import { MdOutlineWatch } from "react-icons/md";
+
+import mainImage from "../../assets/Images/Home/MainImage.png";
+import CartItem from "./CatItem";
 
 const Card = () => {
+  const addToCart = true;
   return (
-    <div className="card bg-base-100 w-80 lg:w-72 shadow-xl">
+    <div className="card bg-base-100 w-80 lg:w-72 shadow-xl rounded-lg">
       <figure>
-        <img
-          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-          alt="Shoes" 
-        />
+        <img src={mainImage} alt="Shoes" />
       </figure>
-      <div className="card-body">
-        <h2 className="card-title">Shoes!</h2>
-        <p>If a dog chews shoes whose shoes does he choose?</p>
-        <div className="card-actions justify-end">
-          <button className="btn btn-primary">Buy Now</button>
+      <div className="card-body p-3 flex justify-center items-center">
+        <h2 className="card-title text-md">Omega watch series 2</h2>
+        <h2 className="card-title text-sm">₹1400/-</h2>
+        <div className="rating rating-lg rating-half w-[40%]">
+          <input type="radio" name="rating-10" className="rating-hidden" />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-1 bg-green-500"
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-2 bg-green-500"
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-1 bg-green-500"
+            defaultChecked
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-2 bg-green-500"
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-1 bg-green-500"
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-2 bg-green-500"
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-1 bg-green-500"
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-2 bg-green-500"
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-1 bg-green-500"
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-2 bg-green-500"
+          />
+        </div>
+        <div className="flex justify-between gap-4">
+          <button className="btn">
+            <MdOutlineWatch className="text-sm" /> Discover
+          </button>
+          {!addToCart && (
+            <button className="btn btn-primary">
+              <LuShoppingCart className="text-sm" /> Add to cart
+            </button>
+          )}
+
+          {addToCart && <CartItem />}
         </div>
       </div>
     </div>

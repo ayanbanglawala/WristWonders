@@ -1,4 +1,5 @@
 import React from 'react'
+import logo from '../assets/Images/Logo.png'
 
 const Navbar = () => {
     return (
@@ -30,7 +31,7 @@ const Navbar = () => {
                     </div>
                 </div>
                 <div className="navbar-center">
-                    <a className="btn btn-ghost text-xl font-type">Wrist Wonders</a>
+                    <a className="btn btn-ghost text-xl font-type"><img src={logo} className=' w-[190px] lg:w-[230px]' alt="" /></a>
                 </div>
                 <div className="navbar-end">
                     <div className="dropdown dropdown-end">

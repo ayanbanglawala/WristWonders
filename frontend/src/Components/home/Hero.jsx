@@ -3,7 +3,7 @@ import mainImage from "../../assets/Images/Home/MainImage.png";
 import { LuShoppingCart } from "react-icons/lu";
 import { MdOutlineWatch } from "react-icons/md";
 
-const Main = () => {
+const Hero = () => {
   return (
     <div className="bg-white">
       <div className="hero bg-base-0 min-h-[91vh] ">
@@ -40,4 +40,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default Hero;

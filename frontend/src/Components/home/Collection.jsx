@@ -12,8 +12,6 @@ const Collection = () => {
         <CollectionCard/>
         <CollectionCard/>
         <CollectionCard/>
-        <CollectionCard/>
-        <CollectionCard/>
       </div>
     </div>
   )

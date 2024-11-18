@@ -2,8 +2,8 @@ import React from "react";
 import { LuShoppingCart } from "react-icons/lu";
 import { MdOutlineWatch } from "react-icons/md";
 
-import mainImage from "../../assets/Images/Home/MainImage.png";
-import CartItem from "./CatItem";
+import mainImage from "../assets/Images/Home/MainImage.png";
+import CartItem from "./home/CatItem";
 
 const Card = () => {
   const addToCart = false;

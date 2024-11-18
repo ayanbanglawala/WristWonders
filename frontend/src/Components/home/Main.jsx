@@ -6,13 +6,14 @@ import { MdOutlineWatch } from "react-icons/md";
 const Main = () => {
   return (
     <div className="bg-white">
-      <div className="hero bg-base-0 min-h-[91vh]">
-        <div className="hero-content flex-col lg:flex-row bg-white">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-lg animate-gradient-shift bg-gradient-to-b from-purple-500 via-pink-500 to-yellow-500 blur-lg opacity-75"></div>
+      <div className="hero bg-base-0 min-h-[91vh] ">
+        <div className="hero-content flex-col gap-10 lg:flex-row bg-white">
+          <div className="relative flex justify-center items-center">
+            <div className="absolute inset-0 rounded-lg animate-gradient-shift bg-gradient-to-b w-[60%] ml-[20%] h-[90%] mt-[14%] from-blue-500 via-blue-300 to-blue-800 blur-lg opacity-75"></div>
             <img
               src={mainImage}
-              className="max-w-xs lg:max-w-md rounded-lg relative z-10"
+              alt="Main"
+              className="max-w-xs lg:max-w-md rounded-lg relative z-20 animate-updown"
             />
           </div>
           <div>
@@ -29,7 +30,7 @@ const Main = () => {
             <button className="btn mx-3">
               <MdOutlineWatch className="text-xl" /> Discover
             </button>
-            <button className="btn btn-primary">
+            <button className="btn bg-blue-500 text-white hover:bg-blue-600">
               <LuShoppingCart className="text-xl" /> Add to cart
             </button>
           </div>

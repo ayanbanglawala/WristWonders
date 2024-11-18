@@ -12,14 +12,14 @@ const CartItem = () => {
     <div className="flex items-center gap-3 rounded-lg  w-[50%] justify-between p-0">
       <button
         onClick={decreaseQuantity}
-        className="btn bg-[#4A00FF] text-white hover:bg-[#3F00E7]"
+        className="btn bg-blue-500 text-white hover:bg-blue-600"
       >
         -
       </button>
       <span className="text-lg font-semibold">{quantity}</span>
       <button
         onClick={increaseQuantity}
-        className="btn bg-[#4A00FF] text-white hover:bg-[#3F00E7]"
+        className="btn bg-blue-500 text-white hover:bg-blue-600"
       >
         +
       </button>

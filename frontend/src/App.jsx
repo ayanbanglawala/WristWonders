@@ -7,13 +7,17 @@ import Login from './pages/Authentication/Login';
 import Signup from './pages/Authentication/Signup';
 import ForgotPassword from './pages/Authentication/ForgetPassword';
 import ProductsList from './pages/Products Listing/ProductsList';
+import Product from './pages/Products Listing/Product';
+import ViewCart from './pages/Cart/ViewCart';
+import AddressSelect from './pages/Cart/AddressSelect';
+import Payment from './pages/Checkout/Payment';
 
 function App() {
   
 
   return (
     <div>
-      <ProductsList/>
+      <Payment/>
     </div>
   )
 }

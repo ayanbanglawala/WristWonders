@@ -1,5 +1,6 @@
 import React from 'react'
 import logo from '../assets/Images/Logo.png'
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
     return (
@@ -27,11 +28,55 @@ const Navbar = () => {
                         </div>
                         <div className="drawer-side">
                             <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
-                            <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-                                {/* Sidebar content here */}
-                                <li><a>Sidebar Item 1</a></li>
-                                <li><a>Sidebar Item 2</a></li>
-                            </ul>
+                            <div className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+                                <img src={logo} alt="Logo" className="mb-6" />
+
+                                {/* Authentication Section */}
+                                <div className="mb-6">
+                                    <Link to="/login">
+                                    <button className="btn bg-blue-500 hover:bg-blue-600 text-white w-full mb-2">Login</button>
+                                    </Link>
+                                    <div className="divider">OR</div>
+                                    <Link to="/signup">
+                                    <button className="btn bg-green-500 hover:bg-green-600 text-white w-full">Sign Up</button>
+                                    </Link>
+                                </div>
+
+                                {/* Categories Section */}
+                                <h3 className="text-lg font-semibold mb-4">Categories</h3>
+                                <ul className="menu menu-compact">
+                                    <li><a href="#">Men's Watches</a></li>
+                                    <li><a href="#">Women's Watches</a></li>
+                                    <li><a href="#">Sports Watches</a></li>
+                                    <li><a href="#">Luxury Watches</a></li>
+                                    <li><a href="#">Smart Watches</a></li>
+                                    <li><a href="#">Kids' Watches</a></li>
+                                </ul>
+
+                                {/* Additional Sections */}
+                                <h3 className="text-lg font-semibold mt-6 mb-4">Quick Links</h3>
+                                <ul className="menu menu-compact">
+                                    <li><a href="#">Best Sellers</a></li>
+                                    <li><a href="#">New Arrivals</a></li>
+                                    <li><a href="#">Sale</a></li>
+                                    <li><a href="#">Gift Cards</a></li>
+                                </ul>
+
+                                {/* Customer Support Section */}
+                                <h3 className="text-lg font-semibold mt-6 mb-4">Customer Support</h3>
+                                <ul className="menu menu-compact">
+                                    <li><a href="#">Contact Us</a></li>
+                                    <li><a href="#">Returns & Exchanges</a></li>
+                                    <li><a href="#">Shipping Information</a></li>
+                                    <li><a href="#">FAQs</a></li>
+                                </ul>
+
+                                {/* Footer Section */}
+                                <div className="mt-auto pt-6">
+                                    <p className="text-sm text-center">© 2024 WatchStore. All Rights Reserved.</p>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -102,7 +147,7 @@ const Navbar = () => {
                                 <span className="text-lg font-bold">8 Items</span>
                                 <span className="text-info">Subtotal: $999</span>
                                 <div className="card-actions">
-                                    <button className="btn bg-blue-500 text-white hover:bg-blue-600 btn-block">View cart</button>
+                                    <Link to="/cart"><button className="btn bg-blue-500 text-white hover:bg-blue-600 btn-block">View cart</button></Link>
                                 </div>
                             </div>
                         </div>

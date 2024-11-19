@@ -4,6 +4,7 @@ import { MdOutlineWatch } from "react-icons/md";
 
 import mainImage from "../assets/Images/Home/MainImage.png";
 import CartItem from "./home/CatItem";
+import { Link } from "react-router-dom";
 
 const Card = () => {
   const addToCart = false;
@@ -71,9 +72,11 @@ const Card = () => {
           <p className="ml-2">2.5</p>
         </div>
         <div className="flex justify-between gap-4">
-          <button className="btn">
-            <MdOutlineWatch className="text-sm" /> Discover
-          </button>
+          <Link to="/product">
+            <button className="btn">
+              <MdOutlineWatch className="text-sm" /> Discover
+            </button>
+          </Link>
           {!addToCart && (
             <button className="btn bg-blue-500 text-white hover:bg-blue-600">
               <LuShoppingCart className="text-sm" /> Add to cart

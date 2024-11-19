@@ -2,6 +2,7 @@ import React from "react";
 import mainImage from "../../assets/Images/Home/MainImage.png";
 import { LuShoppingCart } from "react-icons/lu";
 import { MdOutlineWatch } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -27,9 +28,11 @@ const Hero = () => {
               features, making it an ideal timepiece for both everyday wear and
               formal occasions.
             </p>
+            <Link to="/product">
             <button className="btn mx-3">
               <MdOutlineWatch className="text-xl" /> Discover
             </button>
+            </Link>
             <button className="btn bg-blue-500 text-white hover:bg-blue-600">
               <LuShoppingCart className="text-xl" /> Add to cart
             </button>

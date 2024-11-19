@@ -1,6 +1,7 @@
 import React from "react";
 import { FaArrowRight } from "react-icons/fa6";
 import img from "../../assets/Images/Home/digital.jpeg";
+import { Link } from "react-router-dom";
 
 const CollectionCard = () => {
     return (
@@ -13,12 +14,12 @@ const CollectionCard = () => {
             />
 
             {/* Text Overlay */}
-            <a href="">
+            <Link to="products">
                 <div className="absolute bottom-0 w-full flex text-white items-center justify-between bg-blue-500 bg-opacity-90 px-5 py-4 group-hover:bg-opacity-100 transition-all duration-300">
                     <h2 className="text-xl font-semibold ">Digital</h2>
                     <FaArrowRight className="text-2xl" />
                 </div>
-            </a>
+            </Link>
         </div>
     );
 };

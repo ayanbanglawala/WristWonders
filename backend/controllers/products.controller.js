@@ -1,18 +1,21 @@
 import Category from "../models/categories.model.js";
 import Product from "../models/product.model.js";
 
-export const productsAll = async(req,res)=>{
-    try {
-        const products = await Product.find();
-        if (products.length === 0) {
-            res.status(400).json({message: "No products available in the site for now"})
-        }
-        res.status(200).json(products);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error fetching products" });
-    }
-}
+export const productsAll = async (req, res) => {
+  try {
+      const products = await Product.find();
+
+      if (products.length === 0) {
+          return res.status(400).json({ message: "No products available on the site for now" });
+      }
+
+      return res.status(200).json(products);
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Error fetching products" });
+  }
+};
+
 
 export const productById = async(req, res)=>{
     try {

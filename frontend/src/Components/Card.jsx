@@ -5,23 +5,18 @@ import { MdOutlineWatch } from "react-icons/md";
 import mainImage from "../assets/Images/Home/MainImage.png";
 import CartItem from "./home/CatItem";
 import { Link } from "react-router-dom";
-import useGetProducts from "../Hooks/useGetProducts";
 
-const Card = () => {
+const Card = ({image, name, price, key, review}) => {
   const addToCart = false;
-  const {products, loading, getProducts}= useGetProducts();
-  useEffect(()=>{
-    getProducts();
-    console.log(products);
-  },[])
+  
   return (
     <div className="card bg-base-100 w-80 lg:w-72 shadow-xl rounded-lg">
       <figure>
-        <img src={mainImage} alt="Shoes" />
+        <img src={`http://localhost:5001/${image}`} className="w-80 h-full" alt="Watch" />
       </figure>
       <div className="card-body p-3 flex justify-center items-center">
-        <h2 className="card-title text-md">Omega watch series 2</h2>
-        <h2 className="card-title text-sm">₹1400/-</h2>
+        <h2 className="card-title text-md">{name}</h2>
+        <h2 className="card-title text-sm">₹{price}/-</h2>
         <div className="rating rating-lg rating-half w-[40%] flex justify-center items-center">
           <input type="radio" name="rating-10" className="rating-hidden" />
           <input

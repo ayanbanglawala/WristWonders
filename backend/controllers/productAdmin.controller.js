@@ -4,10 +4,12 @@ import User from "../models/user.model.js";
 
 export const addProduct = async (req, res) => {
     try {
+        
         const sellerId = req.user._id;
-        const { name, brand, price, description, stock, images, category } = req.body;
+        const { name, brand, price, description, stock, category } = req.body;
+        const image = req.file.path;
 
-        if (!name || !price || !description || !stock || !images || !brand || !sellerId || !category) {
+        if (!name || !price || !description || !stock || !image || !brand || !sellerId || !category) {
             return res.status(400).json({ message: "All fields are required" });
         }
         const user = User.findOne(sellerId);
@@ -25,10 +27,12 @@ export const addProduct = async (req, res) => {
             price,
             description,
             stock,
-            images,
+            images: image,
             category
         });
         await product.save();
+        console.log(image);
+        
         res.status(201).json({ message: "Product added successfully" });
     } catch (error) {
         console.error(error);

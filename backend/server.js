@@ -12,6 +12,7 @@ import cart from "./routes/cart.route.js";
 import orders from "./routes/orders.route.js";
 import payments from "./routes/payments.route.js";
 import review from "./routes/review.route.js";
+import upload from './routes/upload.route.js';
 
 
 dotenv.config();
@@ -19,6 +20,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.use('/', express.static('uploads'))
 app.use(cors());
 app.use(cors({
     origin: 'http://localhost:5173',  // Allow only your frontend
@@ -39,6 +41,7 @@ app.use("/api/cart", cart)
 app.use("/api/orders", orders)
 app.use("/api/payments", payments)
 app.use("/api/products/review", review);
+app.use("/api/upload", upload);
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

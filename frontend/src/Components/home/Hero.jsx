@@ -29,13 +29,15 @@ const Hero = () => {
               formal occasions.
             </p>
             <Link to="/product">
-            <button className="btn mx-3">
-              <MdOutlineWatch className="text-xl" /> Discover
-            </button>
+              <button className="btn mx-3">
+                <MdOutlineWatch className="text-xl" /> Discover
+              </button>
             </Link>
-            <button className="btn bg-blue-500 text-white hover:bg-blue-600">
-              <LuShoppingCart className="text-xl" /> Add to cart
-            </button>
+            <Link to="/dashboard/addproduct">
+              <button className="btn bg-blue-500 text-white hover:bg-blue-600">
+                <LuShoppingCart className="text-xl" /> Add to cart
+              </button>
+            </Link>
           </div>
         </div>
       </div>

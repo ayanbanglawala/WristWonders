@@ -13,6 +13,7 @@ import Payment from './pages/Checkout/Payment';
 import {Toaster} from 'react-hot-toast';
 
 import { Routes, Route, Navigate } from "react-router-dom"
+import AddProduct from './pages/Dashboard/AddProduct';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/cart" element={<ViewCart />} />
         <Route path="/address" element={<AddressSelect />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/dashboard/addproduct" element={<AddProduct />} />
       </Routes>
       <div><Toaster /></div>
     </div>

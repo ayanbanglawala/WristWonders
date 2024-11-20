@@ -1,38 +1,36 @@
 import React, { useState } from 'react'
 import logo from '../../assets/Images/Logo.png'
+import useSignup from '../../Hooks/useSignup.js'
 
 const Signup = () => {
   const [formData, setFormData] = useState({
     fName: '',
     lName: '',
+    phone: '',
     email: '',
     password: '',
     cPassword: '',
-  })
+  });
+
+  const { loading, signup } = useSignup();
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData({
-      ...formData,
-      [name]: value,
-    })
-  }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
-    // Validation for matching passwords
-    if (formData.password !== formData.cPassword) {
-      alert('Passwords do not match!')
-      return
-    }
-
-    // Proceed with the signup logic (API call, etc.)
-    console.log(formData)
-  }
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await signup(formData);
+    console.log("Signup process complete.");
+  };
   return (
     <div className="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8">
+      {
+        loading && (<div className="overlay">
+          <span className="loading loading-spinner loading-lg bg-blue-600"></span>
+        </div>)
+      }
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img alt="Wrist Wonders" src={logo} className="mx-auto h-14 w-auto" />
         <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
@@ -78,6 +76,24 @@ const Signup = () => {
             </div>
           </div>
 
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-900">
+              Phone Number
+            </label>
+            <div className="mt-0">
+              <input
+                id="phone"
+                name="phone"
+                type="number"
+                required
+                autoComplete="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="block w-full rounded-md border-0 py-1.5 p-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm"
+                placeholder="Enter your email"
+              />
+            </div>
+          </div>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-900">
               Email Address

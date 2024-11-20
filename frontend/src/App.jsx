@@ -10,16 +10,15 @@ import Product from './pages/Products Listing/Product';
 import ViewCart from './pages/Cart/ViewCart';
 import AddressSelect from './pages/Cart/AddressSelect';
 import Payment from './pages/Checkout/Payment';
+import {Toaster} from 'react-hot-toast';
 
 import { Routes, Route, Navigate } from "react-router-dom"
 
 function App() {
-  
-
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Home/>} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
@@ -29,6 +28,7 @@ function App() {
         <Route path="/address" element={<AddressSelect />} />
         <Route path="/payment" element={<Payment />} />
       </Routes>
+      <div><Toaster /></div>
     </div>
   )
 }

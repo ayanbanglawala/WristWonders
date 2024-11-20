@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { LuShoppingCart } from "react-icons/lu";
 import { MdOutlineWatch } from "react-icons/md";
 
 import mainImage from "../assets/Images/Home/MainImage.png";
 import CartItem from "./home/CatItem";
 import { Link } from "react-router-dom";
+import useGetProducts from "../Hooks/useGetProducts";
 
 const Card = () => {
   const addToCart = false;
+  const {products, loading, getProducts}= useGetProducts();
+  useEffect(()=>{
+    getProducts();
+    console.log(products);
+  },[])
   return (
     <div className="card bg-base-100 w-80 lg:w-72 shadow-xl rounded-lg">
       <figure>

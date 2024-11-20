@@ -10,7 +10,7 @@ const Logout = () => {
       {!loading ? (
         <button className="btn bg-red-500 hover:bg-red-600 text-white w-full" onClick={logout}>Logout</button>
       ) : (
-        <span className='loading loading-spinner'></span>
+        <div className="w-100 flex justify-center items-center"><span className='loading loading-spinner'></span></div>
       )}
     </div>
   );

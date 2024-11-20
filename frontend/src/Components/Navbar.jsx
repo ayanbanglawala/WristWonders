@@ -60,6 +60,7 @@ const Navbar = () => {
                                             <Link to="/profile">
                                                 <button className="btn bg-blue-500 hover:bg-blue-600 text-white w-full mb-2">Profile</button>
                                             </Link>
+                                            <div className="divider">OR</div>
                                             <Logout/>
                                         </div>
                                     )
@@ -96,7 +97,7 @@ const Navbar = () => {
 
                                 {/* Footer Section */}
                                 <div className="mt-auto pt-6">
-                                    <p className="text-sm text-center">© 2024 WatchStore. All Rights Reserved.</p>
+                                    <p className="text-sm text-center">© 2024 WristWonders. All Rights Reserved.</p>
                                 </div>
                             </div>
 

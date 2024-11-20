@@ -20,7 +20,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use('/', express.static('uploads'))
+app.use('/uploads', express.static('uploads'))
 app.use(cors());
 app.use(cors({
     origin: 'http://localhost:5173',  // Allow only your frontend

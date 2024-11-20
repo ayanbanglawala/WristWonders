@@ -41,7 +41,7 @@ const AddProduct = () => {
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <img
                     alt="Wrist Wonders"
-                    src="/logo.png"
+                    src={`http://localhost:5001/uploads/2f4a3ebbca36160f1126e651436d2f98`}
                     className="mx-auto h-14 w-auto"
                 />
                 <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">

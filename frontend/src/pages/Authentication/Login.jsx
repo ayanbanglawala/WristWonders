@@ -1,5 +1,6 @@
 import React, { useState } from 'react'  // Add useState import
 import logo from '../../assets/Images/Logo.png'
+import useLogin from '../../Hooks/useLogin'
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -15,14 +16,20 @@ const Login = () => {
         })
     }
 
+    const { loading, login } = useLogin()
     const handleSubmit = (e) => {
         e.preventDefault()
-        // Proceed with the signup logic (API call, etc.)
+        login(formData)  
         console.log(formData)
     }
 
     return (
         <div className="flex min-h-[80vh] lg:min-h-[100vh] flex-1 flex-col justify-center items-center px-6 py-12 lg:px-8">
+            {
+                loading && (<div className="overlay">
+                    <span className="loading loading-spinner loading-lg bg-blue-600"></span>
+                </div>)
+            }
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <img
                     alt="Wrist Wonders"

@@ -1,8 +1,17 @@
 import React from 'react'
 import logo from '../assets/Images/Logo.png'
 import { Link } from 'react-router-dom'
+import { useAuthContext } from '../Context/AuthContext';
+import Logout from './Logout';
 
 const Navbar = () => {
+    const { authUser } = useAuthContext();
+    console.log(authUser);
+    let isAuth = false;
+    if (authUser == null) {
+        isAuth = true;
+    }
+
     return (
         <>
             <div className="navbar bg-base-100 w-100">
@@ -32,15 +41,29 @@ const Navbar = () => {
                                 <img src={logo} alt="Logo" className="mb-6" />
 
                                 {/* Authentication Section */}
-                                <div className="mb-6">
-                                    <Link to="/login">
-                                    <button className="btn bg-blue-500 hover:bg-blue-600 text-white w-full mb-2">Login</button>
-                                    </Link>
-                                    <div className="divider">OR</div>
-                                    <Link to="/signup">
-                                    <button className="btn bg-green-500 hover:bg-green-600 text-white w-full">Sign Up</button>
-                                    </Link>
-                                </div>
+                                {
+                                    isAuth && (
+                                        <div className="mb-6">
+                                            <Link to="/login">
+                                                <button className="btn bg-blue-500 hover:bg-blue-600 text-white w-full mb-2">Login</button>
+                                            </Link>
+                                            <div className="divider">OR</div>
+                                            <Link to="/signup">
+                                                <button className="btn bg-green-500 hover:bg-green-600 text-white w-full">Sign Up</button>
+                                            </Link>
+                                        </div>
+                                    )
+                                }
+                                {
+                                    !isAuth && (
+                                        <div className="mb-6">
+                                            <Link to="/profile">
+                                                <button className="btn bg-blue-500 hover:bg-blue-600 text-white w-full mb-2">Profile</button>
+                                            </Link>
+                                            <Logout/>
+                                        </div>
+                                    )
+                                }
 
                                 {/* Categories Section */}
                                 <h3 className="text-lg font-semibold mb-4">Categories</h3>

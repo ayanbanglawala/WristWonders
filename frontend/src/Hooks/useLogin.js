@@ -27,6 +27,7 @@ const useLogin = () => {
             if (response.ok) {
                 toast.success("Login successful!");
                 localStorage.setItem("user", JSON.stringify(data))
+                setAuthUser(data)
                 navigate("/");
             }
             else{

@@ -21,24 +21,21 @@ const ProductsList = () => {
           <span className="loading loading-spinner loading-lg bg-blue-600"></span>
         </div>
       )}
-      {!loading && (
-        <>
-          <Navbar />
-          <ProductNav />
-          <div className="container mx-auto my-5 flex flex-wrap justify-center gap-6 w-[100vw]">
-            {products.map((product) => (
-              <Card
-                key={product.id}
-                name={product.name}
-                price={product.price}
-                image={product.images[0]}
-                reviews={product.review}
-              />
-            ))}
-          </div>
-          <Footer />
-        </>
-      )}
+      <Navbar />
+      <ProductNav />
+      <div className="container mx-auto my-5 flex flex-wrap justify-center gap-6 w-[100vw]">
+        {products.map((product) => (
+          <Card
+            productId={product._id}
+            name={product.name}
+            price={product.price}
+            image={product.images[0]}
+            rating={product.ratings / product.numReviews}
+          />
+        ))}
+      </div>
+      <Footer />
+
     </div>
   );
 };

@@ -26,6 +26,12 @@ export const reviewItem = async (req, res)=>{
         if (reviewExists) {
             return res.status(400).json({ message: "Review already exists for this product" });
         }
+
+        const product = await Product.findById(productId);
+        product.ratings += rating;
+        product.numReviews += 1;
+        await product.save();
+
         const review = new Review({ user: userId, product: productId, rating, comment });
         await review.save();
         res.status(201).json({ message: "Review added successfully", review });
@@ -38,20 +44,15 @@ export const reviewItem = async (req, res)=>{
 export const getReviews = async (req, res) => {
     try {
         const productId = req.params.id;
-        const reviews = await Review.find({ product: productId }).populate("user", "name");
+        const product = await Product.findById(productId); // Use findById for a single document
 
-        if (reviews.length === 0) {
+        if (!product) {
             return res.status(404).json({ message: "No reviews found for this product" });
         }
 
         // Initialize variables for calculating overall average rating
-        let totalRatingSum = 0;
-        let totalRatingCount = 0;
-
-        reviews.map(review => {
-            totalRatingSum += review.rating;
-            totalRatingCount++;
-        })
+        const totalRatingSum = product.ratings; // Sum all the ratings
+        const totalRatingCount = product.numReviews; // Number of ratings
 
         // Calculate overall average rating
         const averageRating = totalRatingCount > 0 ? totalRatingSum / totalRatingCount : 0;

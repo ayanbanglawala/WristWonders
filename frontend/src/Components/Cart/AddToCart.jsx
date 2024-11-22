@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useCart } from '../../context/CartContext';
 import useAddToCart from '../../Hooks/useAddToCart';
 import useCheckCart from '../../Hooks/useCheckCart';
 import { LuShoppingCart } from "react-icons/lu";
 import CartItem from '../home/CatItem';
 
 const AddToCart = ({ productId }) => {
-  const { loading: addingToCart, addToCart } = useAddToCart();
+  const { addToCart } = useCart(); // Access global addToCart
+  const { loading: addingToCart, addToCart: addItemToCart } = useAddToCart();
   const { loading: checkingCart, existance, checkCart } = useCheckCart();
   const [isInCart, setIsInCart] = useState(false);
 
-  // Check if the product is in the cart
   useEffect(() => {
     const fetchCartStatus = async () => {
       await checkCart({ productId });
@@ -18,13 +19,13 @@ const AddToCart = ({ productId }) => {
     fetchCartStatus();
   }, [checkCart, productId, existance]);
 
-  // Handle Add to Cart action
   const handleAddToCart = async () => {
-    await addToCart({ id: productId });
-    setIsInCart(true); // Update local state after adding to cart
+    const newItem = { id: productId }; // Replace with actual product data
+    await addItemToCart(newItem);
+    addToCart(newItem); // Update global state
+    setIsInCart(true);
   };
 
-  // Show loading spinner while checking the cart
   if (checkingCart) {
     return (
       <div className="w-full flex justify-center items-center">
@@ -33,7 +34,6 @@ const AddToCart = ({ productId }) => {
     );
   }
 
-  // Render appropriate button based on cart status
   return (
     <>
       {isInCart ? (

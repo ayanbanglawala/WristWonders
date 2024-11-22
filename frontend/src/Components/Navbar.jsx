@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '../assets/Images/Logo.png'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../Context/AuthContext';
 import Logout from './Logout';
+import useGetCartItems from '../Hooks/useGetCartItems';
+import { useCart } from '../Context/CartContext';
 
 const Navbar = () => {
     const { authUser } = useAuthContext();
@@ -11,7 +13,13 @@ const Navbar = () => {
     if (authUser == null) {
         isAuth = true;
     }
-
+    const {loading, cartItems, getCartItems} = useGetCartItems();
+    useEffect(()=>{
+        getCartItems();
+        
+    },[getCartItems])
+    const { cartItemsAll } = useCart();
+    
     return (
         <>
             <div className="navbar bg-base-100 w-100">
@@ -161,17 +169,16 @@ const Navbar = () => {
                                         strokeWidth="2"
                                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
-                                <span className="badge badge-sm indicator-item">8</span>
+                                <span className="badge badge-sm indicator-item">{cartItemsAll.length}</span>
                             </div>
                         </div>
                         <div
                             tabIndex={0}
-                            className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow">
+                            className="card flex justify-center items-center card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow">
                             <div className="card-body">
-                                <span className="text-lg font-bold">8 Items</span>
-                                <span className="text-info">Subtotal: $999</span>
-                                <div className="card-actions">
-                                    <Link to="/cart"><button className="btn bg-blue-500 text-white hover:bg-blue-600 btn-block">View cart</button></Link>
+                                <span className="text-lg font-bold">{cartItemsAll.length} Items in your Cart</span>
+                                <div className="card-actions w-[100%]">
+                                    <Link to="/cart" className='w-100'><button className="btn bg-blue-500 w-[170px] text-white hover:bg-blue-600 btn-block">View cart</button></Link>
                                 </div>
                             </div>
                         </div>

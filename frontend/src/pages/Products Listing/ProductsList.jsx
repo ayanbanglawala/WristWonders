@@ -12,7 +12,6 @@ const ProductsList = () => {
     getProducts();
   }, []);
   useEffect(() => {
-    console.log("Products updated:", products);
   }, [products]); // Logs when products state changes
   return (
     <div>

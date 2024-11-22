@@ -40,13 +40,34 @@ export const myCart = async (req, res) => {
     try {
         const userId = req.user._id.toString();
         const cart = await Cart.findOne({ user: userId }).populate("cartItems.product");
-        if (!cart) return res.status(404).json({ message: "Cart not found" });
+        if (!cart) return res.status(404).json({ error: "Cart not found" });
         res.status(200).json({ cart });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Error fetching cart" });
+        res.status(500).json({ error: "Error fetching cart" });
     }
 };
+
+export const checkCart = async (req, res) => {
+    try {
+        const userId = req.user._id.toString();
+        const productId = req.params.productId; // Get the product ID from the URL parameters
+
+        // Find the cart for the user and populate the cart items
+        const cart = await Cart.findOne({ user: userId }).populate("cartItems.product");
+        if (!cart) return res.status(404).json({ error: "Cart not found" });
+
+        // Check if the product exists in the cart
+        const productExists = cart.cartItems.some(item => item.product._id.toString() === productId);
+
+        // Return true if product exists, otherwise false
+        res.status(200).json({ exists: productExists });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error fetching cart" });
+    }
+};
+
 
 // Remove from Cart
 export const removeFromCart = async (req, res) => {

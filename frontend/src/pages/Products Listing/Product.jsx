@@ -51,12 +51,7 @@ const Product = () => {
               <p className="text-xl text-green-700">{product.discount || "N/A"} Off</p> */}
             </div>
             <p className="py-6">{product.description}</p>
-            {
-              !addtocart && <AddToCart id={product._id}/>
-            }
-            {
-              addtocart && <CartItem />
-            }
+            <AddToCart productId={product._id} />
           </div>
         </div>
       </div>

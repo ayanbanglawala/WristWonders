@@ -22,7 +22,6 @@ const ProductDetails = ({id}) => {
     }, [product]);
 
     const addtocart = false;
-    console.log(product);
     return (
         <>
             <div className="hero-content flex flex-col lg:flex-row w-full">

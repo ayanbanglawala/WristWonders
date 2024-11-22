@@ -13,8 +13,79 @@ const Card = ({ image, name, price, productId, rating = 0 }) => {
         <h2 className="card-title text-md">{name}</h2>
         <h2 className="card-title text-sm">₹{price}/-</h2>
         <div className="rating rating-lg rating-half w-[40%] flex justify-center items-center">
-          {/* Rating rendering logic */}
-          <p className="ml-2">{rating.toFixed(2)}</p>
+          <input type="radio" name="rating-10" className="rating-hidden" checked={rating == 0} />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-1 bg-green-500"
+            // disabled
+            checked={rating <= 0.75 && rating > 0.25}
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-2 bg-green-500"
+            // disabled
+            checked={rating <= 1.25 && rating > 0.75}
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-1 bg-green-500"
+            // disabled
+            checked={rating <= 1.75 && rating > 1.25}
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-2 bg-green-500"
+            // disabled 
+            checked={rating <= 2.25 && rating >= 1.75}
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-1 bg-green-500"
+            // disabled
+            checked={rating <= 2.75 && rating >= 2.25}
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-2 bg-green-500"
+            // disabled
+            checked={rating <= 3.25 && rating >= 2.75}
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-1 bg-green-500"
+            // disabled
+            checked={rating <= 3.75 && rating >= 3.25}
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-2 bg-green-500"
+            // disabled
+            checked={rating <= 4.25 && rating >= 3.75}
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-1 bg-green-500"
+            disabled
+            checked={rating <= 4.75 && rating >= 4.25}
+          />
+          <input
+            type="radio"
+            name="rating-10"
+            className="mask mask-star-2 mask-half-2 bg-green-500"
+            disabled
+            checked={rating <= 5 && rating >= 4.75}
+          />
+          <p className="ml-2">{rating}</p>
+
         </div>
         <div className="flex justify-between gap-4">
           <Link to={`/product/${productId}`}>

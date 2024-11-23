@@ -37,7 +37,7 @@ const AddToCart = ({ productId }) => {
   return (
     <>
       {isInCart ? (
-        <CartItem />
+        <CartItem productId= {productId} />
       ) : (
         <button
           className="btn text-white bg-blue-500 hover:bg-blue-600"

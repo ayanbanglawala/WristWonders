@@ -1,41 +1,40 @@
-import { useState } from "react";
-import { useCart } from "./CartContext"; // Importing cart context
+import React, { useCallback, useState } from 'react';
+import toast from 'react-hot-toast';
 
-const useUpdateCart = (itemId) => {
-  const { updateCart } = useCart(); // Getting updateCart from context
+const useUpdateCart = () => {
   const [loading, setLoading] = useState(false);
+  const [quantityNew, setQuantity] = useState([]);
 
-  const sendOperation = async (operation) => {
+  const updateCart = useCallback(async ({ operation, productId }) => {
+    setLoading(true);
     try {
-      setLoading(true);
-
-      // Send the API request with the operation
-      const response = await fetch("/api/cart", {
-        method: "POST",
+      const response = await fetch(`/api/cart/${productId}`, {
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          operation: operation, // either 'increment' or 'decrement'
-        }),
+        body: JSON.stringify({ operation }),
       });
-
       const data = await response.json();
-
       if (response.ok) {
-        // Update cart based on the operation and itemId
-        updateCart(operation, itemId);
-      } else {
-        console.error("Failed to update cart", data);
+        const updatedCartItem = data.cartItems.filter(
+          (cartItem) => cartItem.product === productId
+        );
+        setQuantity(updatedCartItem);
+        // console.log('Updated Cart Item:', updatedCartItem); // Use the updated value here
+      }
+      if (data.error) {
+        console.error(data.error);
+        toast.error(data.error);
       }
     } catch (error) {
-      console.error("Error while updating cart", error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  return { sendOperation, loading };
+  return { loading, quantityNew, updateCart };
 };
 
 export default useUpdateCart;

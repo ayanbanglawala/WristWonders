@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 const useAddToCart = () => {
     const [loading, setLoading] = useState();
     const [quantityBtn, setQuantity] = useState();
+    const [existanceP, setExistanceP] = useState(false);
     const addToCart = async (product) => {
         const productId = product.id;
         setLoading(true);
@@ -18,9 +19,11 @@ const useAddToCart = () => {
             const data = await response.json();
             if (data.error) {
                 toast.error(data.error);
+                setExistanceP(false)
             }
             if (response.ok) {
                 toast.success('Product added to cart successfully');
+                setExistanceP(true);
                 setQuantity(true);
             }
             console.log(data);
@@ -31,7 +34,7 @@ const useAddToCart = () => {
         }
     }
 
-    return { loading, addToCart, quantityBtn }  // Return the addToCart function and loading state
+    return { loading, addToCart, quantityBtn, existanceP }  // Return the addToCart function and loading state
  
 }
 

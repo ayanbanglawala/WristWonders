@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 const useCheckCart = () => {
     const [loading, setLoading] = useState(false);
     const [existance, setExistance] = useState(null); // Use null for better clarity
+    const [cartQuantity, setCartQuantity] = useState(1);
 
     const checkCart = useCallback(async ({ productId }) => {
         setLoading(true);
@@ -12,9 +13,10 @@ const useCheckCart = () => {
             const response = await fetch(`/api/cart/${productId}`);
             const data = await response.json();
 
-            if (!response.ok) {
+            if (!response.ok || data.error) {
                 // Handle HTTP errors (e.g., 404, 500)
-                toast.error(data.error || 'Error checking cart');
+                // toast.error(data.error || 'Error checking cart');
+                setExistance(false);
             } else {
                 // Handle cart existence
                 if (data.exists) {
@@ -23,6 +25,8 @@ const useCheckCart = () => {
 
                 // Update state
                 setExistance(data.exists);
+                setCartQuantity(data.quantity);
+                
             }
         } catch (error) {
             // Handle network or unexpected errors
@@ -33,7 +37,7 @@ const useCheckCart = () => {
         }
     }, []);
 
-    return { loading, existance, checkCart };
+    return { loading, existance, checkCart, cartQuantity };
 };
 
 export default useCheckCart;

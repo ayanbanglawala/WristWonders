@@ -7,6 +7,10 @@ export const addToCart = async (req, res) => {
         const userId = req.user._id.toString();
         const { product } = req.body;
 
+        if (!userId) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+
         // Check if the product exists in the database
         const productInDb = await Product.findById(product);
         if (!productInDb) return res.status(404).json({ message: "Product not found" });
@@ -52,21 +56,31 @@ export const checkCart = async (req, res) => {
     try {
         const userId = req.user._id.toString();
         const productId = req.params.productId; // Get the product ID from the URL parameters
-
+        if (!userId) {
+            console.log("No");
+            return res.status(401).json({ error: "Unauthorized" });
+            
+        }
         // Find the cart for the user and populate the cart items
         const cart = await Cart.findOne({ user: userId }).populate("cartItems.product");
         if (!cart) return res.status(404).json({ error: "Cart not found" });
 
-        // Check if the product exists in the cart
-        const productExists = cart.cartItems.some(item => item.product._id.toString() === productId);
+        // Check if the product exists in the cart and get its quantity
+        const cartItem = cart.cartItems.find(item => item.product._id.toString() === productId);
 
-        // Return true if product exists, otherwise false
-        res.status(200).json({ exists: productExists });
+        // Return the product's existence and quantity (0 if not found)
+        const response = {
+            exists: !!cartItem,
+            quantity: cartItem ? cartItem.quantity : 0,
+        };
+
+        res.status(200).json(response);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error fetching cart" });
     }
 };
+
 
 
 // Remove from Cart

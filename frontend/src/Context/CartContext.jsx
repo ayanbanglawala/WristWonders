@@ -13,23 +13,45 @@ export const CartProvider = ({ children }) => {
         const data = await response.json();
         if (response.ok) {
           setCartItems(data.cart?.cartItems || []);
-          
         }
-    } catch (error) {
+      } catch (error) {
         console.error('Failed to fetch cart items:', error);
-    }
-};
+      }
+    };
 
-fetchCartItems();
-}, []);
+    fetchCartItems();
+  }, []);
 
-
+  // Add item to cart
   const addToCart = (item) => {
-    setCartItems((prev) => [...prev, item]); // Update local state
+    setCartItems((prev) => {
+      const existingItem = prev.find((i) => i.product._id === item.product._id);
+      if (existingItem) {
+        return prev.map((i) =>
+          i.product._id === item.product._id
+            ? { ...i, quantity: i.quantity + item.quantity }
+            : i
+        );
+      } else {
+        return [...prev, item];
+      }
+    });
+  };
+
+  // Update item quantity
+  const updateCartItemQuantity = (productId, newQuantity) => {
+    if (newQuantity <= 0) return; // Prevent quantity from going below 1
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.product._id === productId
+          ? { ...item, quantity: newQuantity }
+          : item
+      )
+    );
   };
 
   return (
-    <CartContext.Provider value={{ cartItemsAll, addToCart }}>
+    <CartContext.Provider value={{ cartItemsAll, addToCart, updateCartItemQuantity }}>
       {children}
     </CartContext.Provider>
   );

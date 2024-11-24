@@ -7,14 +7,16 @@ import CartItem from '../home/CatItem';
 
 const AddToCart = ({ productId }) => {
   const { addToCart } = useCart(); // Access global addToCart
-  const { loading: addingToCart, addToCart: addItemToCart } = useAddToCart();
-  const { loading: checkingCart, existance, checkCart } = useCheckCart();
+  const { loading: addingToCart, addToCart: addItemToCart, existanceP } = useAddToCart();
+  const { loading: checkingCart, existance, checkCart, cartQuantity } = useCheckCart();
   const [isInCart, setIsInCart] = useState(false);
+  const [quantitySet, setQuantitySet] = useState(1);
 
   useEffect(() => {
     const fetchCartStatus = async () => {
       await checkCart({ productId });
       setIsInCart(existance);
+      setQuantitySet(cartQuantity);
     };
     fetchCartStatus();
   }, [checkCart, productId, existance]);
@@ -23,7 +25,7 @@ const AddToCart = ({ productId }) => {
     const newItem = { id: productId }; // Replace with actual product data
     await addItemToCart(newItem);
     addToCart(newItem); // Update global state
-    setIsInCart(true);
+    setIsInCart(existanceP);
   };
 
   if (checkingCart) {
@@ -37,7 +39,7 @@ const AddToCart = ({ productId }) => {
   return (
     <>
       {isInCart ? (
-        <CartItem productId= {productId} />
+        <CartItem productId= {productId} cartQuantity={quantitySet} />
       ) : (
         <button
           className="btn text-white bg-blue-500 hover:bg-blue-600"

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import useUpdateCart from "../../Hooks/useUpdateCart";
 
-const CartItem = ({ productId }) => {
-  const [quantity, setQuantity] = useState(1); // Local quantity state
+const CartItem = ({ productId, cartQuantity }) => {
+  const [quantity, setQuantity] = useState(cartQuantity); // Local quantity state
   const { loading, quantityNew, updateCart } = useUpdateCart();
 
   const increaseQuantity = () => {
@@ -21,6 +21,8 @@ const CartItem = ({ productId }) => {
       const updatedItem = quantityNew.find((item) => item.product === productId);
       if (updatedItem) {
         setQuantity(updatedItem.quantity);
+        console.log(updatedItem);
+        
       }
     }
   }, [quantityNew, productId]);

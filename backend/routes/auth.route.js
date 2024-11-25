@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 const router = express.Router();
 import { addAddress, deleteAddress, login, logout, profile, profileUpdate, signup, updateAddress} from '../controllers/auth.controller.js';
-import protectRoute from '../middlewears/protectroute.js';
+import protectRoute from '../middlewears/protectRoute.js';
 
 router.post("/login",login);
 router.post("/logout", logout);

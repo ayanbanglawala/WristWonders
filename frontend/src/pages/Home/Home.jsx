@@ -11,7 +11,7 @@ const Home = () => {
     <div>
         <Navbar/>
         <Hero/>
-        <Collection/>
+        {/* <Collection/> */}
         <WatchesCard/>
         <Footer/>
     </div>

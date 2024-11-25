@@ -13,6 +13,7 @@ import orders from "./routes/orders.route.js";
 import payments from "./routes/payments.route.js";
 import review from "./routes/review.route.js";
 import upload from './routes/upload.route.js';
+import path from "path";
 
 
 dotenv.config();
@@ -30,9 +31,11 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cookieParser());
 
-app.get("/",(req,res)=>{
-    res.send("Hello World");
-})
+// app.get("/",(req,res)=>{
+//     res.send("Hello World");
+// })
+
+const __dirname = path.resolve()
 
 app.use("/api/auth", authRoutes)
 app.use("/api/admin", products)
@@ -42,6 +45,12 @@ app.use("/api/orders", orders)
 app.use("/api/payments", payments)
 app.use("/api/products/review", review);
 app.use("/api/upload", upload);
+
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+app.get ("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "dist","index.html"));
+})
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

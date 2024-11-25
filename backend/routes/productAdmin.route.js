@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import { addCategory, addProduct, deleteCategory, deleteProduct, getAllProducts, getCategories, getProducts, updateProduct } from '../controllers/productAdmin.controller.js';
-import protectRoute from '../middlewears/protectroute.js';
+import protectRoute from '../middlewears/protectRoute.js';
 import multer from 'multer';
 const upload = multer({dest:'uploads/'})
 const router = express.Router();

@@ -1,5 +1,5 @@
 import express from "express";
-import protectRoute from '../middlewears/protectroute.js';
+import protectRoute from "../middlewears/protectRoute.js";
 import { uploadImg } from "../controllers/upload.controller.js";
 
 const router = express.Router();

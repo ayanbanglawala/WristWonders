@@ -4,6 +4,6 @@ import { uploadImg } from "../controllers/upload.controller.js";
 
 const router = express.Router();
 
-router.post( '/', uploadImg );
+router.post('/', uploadImg);
 
 export default router;

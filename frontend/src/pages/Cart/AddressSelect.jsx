@@ -1,28 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../../Components/Navbar';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import useAddAddress from '../../hooks/useAddAddress'; // Adjust the path as needed
+import useMakePrimary from '../../Hooks/useMakePrimary';
 
 const AddressSelect = () => {
-    // Example addresses
-    const [addresses, setAddresses] = useState([
-        {
-            id: 1,
-            name: 'Ayan Banglawala',
-            phone: '1234567890',
-            address: '123, Main Street, Ahmedabad, Gujarat, 380001',
-        },
-        {
-            id: 2,
-            name: 'John Doe',
-            phone: '9876543210',
-            address: '456, Park Avenue, Mumbai, Maharashtra, 400001',
-        },
-    ]);
-
-    // Form state for adding a new address
+    const [addresses, setAddresses] = useState([]);
+    const [loadingAddresses, setLoadingAddresses] = useState(false);
+    const [errorAddresses, setErrorAddresses] = useState(null);
+    const navigate = useNavigate();
+    const { addAddress, loading: addingAddress, error: errorAddingAddress } = useAddAddress();
+    const makePrimary = useMakePrimary();
     const [newAddress, setNewAddress] = useState({
         name: '',
-        phone: '',
+        phoneNumber: '',
         street: '',
         city: '',
         state: '',
@@ -30,73 +21,99 @@ const AddressSelect = () => {
         zipCode: '',
     });
 
+    // Fetch existing addresses
+    useEffect(() => {
+        const fetchAddresses = async () => {
+            setLoadingAddresses(true);
+            try {
+                const response = await fetch('/api/auth/profile');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch addresses');
+                }
+                const data = await response.json();
+                setAddresses(data.addresses);
+            } catch (err) {
+                setErrorAddresses(err.message);
+            } finally {
+                setLoadingAddresses(false);
+            }
+        };
+
+        fetchAddresses();
+    }, []);
+
     // Handle input changes
     const handleInputChange = (e) => {
         const { id, value } = e.target;
         setNewAddress((prev) => ({ ...prev, [id]: value }));
     };
 
+    const handleDeliver = async (id) => {
+        try {
+            await makePrimary(id);
+            navigate("/payment")
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     // Handle form submission
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
 
-        // Combine address fields into a single string
-        const fullAddress = `${newAddress.street}, ${newAddress.city}, ${newAddress.state}, ${newAddress.country}, ${newAddress.zipCode}`;
-
-        // Add the new address to the state
-        setAddresses((prev) => [
-            ...prev,
-            {
-                id: prev.length + 1,
-                name: newAddress.name,
-                phone: newAddress.phone,
-                address: fullAddress,
-            },
-        ]);
-
-        // Reset the form
-        setNewAddress({
-            name: '',
-            phone: '',
-            street: '',
-            city: '',
-            state: '',
-            country: '',
-            zipCode: '',
-        });
+        try {
+            const addedAddress = await addAddress(newAddress);
+            setAddresses((prev) => [...prev, addedAddress]); // Update local state
+            setNewAddress({
+                name: '',
+                phoneNumber: '',
+                street: '',
+                city: '',
+                state: '',
+                country: '',
+                zipCode: '',
+            });
+        } catch (error) {
+            console.error('Error adding address:', error);
+        }
     };
 
     return (
         <div className="min-h-screen bg-gray-100">
             <Navbar />
             <div className="max-w-4xl mx-auto py-8 px-4">
-                {/* Page Header */}
                 <h1 className="text-2xl font-bold mb-6 text-center">Select Delivery Address</h1>
 
-                {/* Address List */}
+                {loadingAddresses && <p>Loading addresses...</p>}
+                {errorAddresses && <p className="text-red-500">{errorAddresses}</p>}
+
                 <div className="space-y-4 mb-6">
                     {addresses.map((addr) => (
                         <div
-                            key={addr.id}
+                            key={addr._id}
                             className="border border-gray-300 rounded-lg p-4 bg-white shadow-md flex justify-between items-start"
                         >
                             <div>
                                 <h2 className="font-semibold text-lg">{addr.name}</h2>
-                                <p className="text-sm text-gray-600">{addr.phone}</p>
-                                <p className="text-sm text-gray-600">{addr.address}</p>
+                                <p className="text-sm text-gray-600">{addr.phoneNumber}</p>
+                                <p className="text-sm text-gray-600">
+                                    {`${addr.street}, ${addr.city}, ${addr.state}, ${addr.country}, ${addr.zipCode}`}
+                                </p>
                             </div>
-                            <Link to='/payment'>
-                                <button className="btn bg-blue-500 hover:bg-blue-600 text-white btn-sm">
-                                    Deliver Here
-                                </button>
-                            </Link>
+
+                            <button
+                                className="btn bg-blue-500 hover:bg-blue-600 text-white btn-sm"
+                                onClick={() => handleDeliver(addr._id)} // Fixed here
+                            >
+                                Deliver Here
+                            </button>
                         </div>
                     ))}
                 </div>
 
-                {/* Add New Address */}
                 <div className="bg-white rounded-lg shadow-md p-6">
                     <h2 className="text-lg font-semibold mb-4">Add New Address</h2>
+                    {errorAddingAddress && <p className="text-red-500">{errorAddingAddress}</p>}
                     <form onSubmit={handleFormSubmit} className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium mb-1" htmlFor="name">
@@ -113,13 +130,13 @@ const AddressSelect = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium mb-1" htmlFor="phone">
+                            <label className="block text-sm font-medium mb-1" htmlFor="phoneNumber">
                                 Phone Number
                             </label>
                             <input
                                 type="tel"
-                                id="phone"
-                                value={newAddress.phone}
+                                id="phoneNumber"
+                                value={newAddress.phoneNumber}
                                 onChange={handleInputChange}
                                 className="input input-bordered w-full"
                                 placeholder="Enter your phone number"
@@ -203,8 +220,9 @@ const AddressSelect = () => {
                         <button
                             type="submit"
                             className="btn bg-blue-500 hover:bg-blue-600 text-white w-full"
+                            disabled={addingAddress}
                         >
-                            Save Address
+                            {addingAddress ? 'Saving...' : 'Save Address'}
                         </button>
                     </form>
                 </div>

@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import AddToCart from "./AddToCart";
+import useRemoveItemCart from "../../Hooks/useRemoveItemCart";
 
 const CartCard = ({ img, name, brand, price, quantity, productId }) => {
-
+    const [remove, setRemove] = useState(false);
+    const { loading, removeItemCart } = useRemoveItemCart();
+    const handleRemoveCart = async()=>{
+        removeItemCart({id:productId});
+    }
     return (
         <div className="flex flex-col md:flex-row items-center justify-between bg-white shadow-md rounded-lg p-4 mb-4 w-full">
             {/* Product Image */}
@@ -30,7 +35,7 @@ const CartCard = ({ img, name, brand, price, quantity, productId }) => {
                 {/* Actions */}
                 <div>
                     <AddToCart productId={productId} />
-                    <button className="btn mt-3 btn-error btn-sm text-white w-[100%]">
+                    <button onClick={handleRemoveCart} className="btn mt-3 btn-error btn-sm text-white w-[100%]">
                         Remove
                     </button>
                 </div>

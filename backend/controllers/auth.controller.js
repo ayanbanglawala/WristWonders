@@ -115,11 +115,13 @@ export const addAddress = async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
-        const { street, city, state, country, zipCode, isPrimary } = req.body;
-        if (!street || !city || !state || !country || !zipCode ) {
+        const { name, phoneNumber, street, city, state, country, zipCode, isPrimary } = req.body;
+        console.log(name, phoneNumber, street, city, state, country, zipCode, isPrimary);
+        
+        if ( !name || !phoneNumber || !street || !city || !state || !country || !zipCode ) {
             return res.status(400).json({ error: "All fields are required" });
         }
-        user.addresses.push({ street, city, state, country, zipCode, isPrimary });
+        user.addresses.push({ name, phoneNumber, street, city, state, country, zipCode, isPrimary });
         await user.save();
         res.status(201).json({ message: "Address added successfully!" });
     } catch (error) {

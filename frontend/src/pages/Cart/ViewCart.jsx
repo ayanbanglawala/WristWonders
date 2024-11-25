@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../../Context/CartContext';
 
 const ViewCart = () => {
-  const { cartItemsAll, updateCartItemQuantity } = useCart();
+  const { cartItemsAll } = useCart();
   const [totalAmount, setTotalAmount] = useState(0);
 
   // Calculate the total amount dynamically based on `cartItemsAll`
@@ -21,10 +21,10 @@ const ViewCart = () => {
     calculateTotalAmount();
   }, [cartItemsAll]); // Recalculate when `cartItemsAll` changes
 
-  const handleQuantityChange = (productId, newQuantity) => {
-    if (newQuantity <= 0) return; // Prevent quantity dropping below 1
-    updateCartItemQuantity(productId, newQuantity);
-  };
+  useEffect(() => {
+    console.log('Cart Items:', cartItemsAll);
+  }, [cartItemsAll]);
+
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
@@ -42,21 +42,26 @@ const ViewCart = () => {
           {/* Cart Cards */}
           <div className="space-y-4">
             {cartItemsAll.length > 0 ? (
-              cartItemsAll.map((item) => (
-                <CartCard
-                  key={item.product._id}
-                  productId={item.product._id}
-                  img={item.product.images[0]} // Assuming the first image is the primary image
-                  name={item.product.name}
-                  quantity={item.quantity}
-                  price={item.product.price}
-                  brand={item.product.brand}
-                  onQuantityChange={handleQuantityChange} // Pass quantity change handler here
-                />
-              ))
+              cartItemsAll.map((item, index) => {
+                // Safeguard for item.product
+                const product = item.product || {};
+
+                return (
+                  <CartCard
+                    key={product._id || index} // Use a fallback key if _id is not present
+                    productId={product._id}
+                    img={product.images ? product.images[0] : ''} // Safeguard for images array
+                    name={product.name || 'Unknown Product'}
+                    quantity={item.quantity || 0}
+                    price={product.price || 0}
+                    brand={product.brand || 'Unknown Brand'}
+                  />
+                );
+              })
             ) : (
               <p className="text-center text-gray-500">Your cart is empty.</p>
             )}
+
           </div>
 
           {/* Total Section */}

@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '../../Components/Navbar';
+import useGetCartItems from '../../Hooks/useGetCartItems';
 
 const Payment = () => {
-    const [products, setProducts] = useState([
-        { id: 1, name: 'Product 1', price: 500 },
-        { id: 2, name: 'Product 2', price: 300 },
-        { id: 3, name: 'Product 3', price: 200 },
-    ]); // Example products
+    const { loading, cartItems, getCartItems } = useGetCartItems();
+
+    useEffect(() => {
+        // Fetch cart data when the component mounts
+        getCartItems();
+    }, [getCartItems]);
 
     const loadScript = (src) => {
         return new Promise((resolve) => {
@@ -20,7 +22,8 @@ const Payment = () => {
     };
 
     const calculateTotal = () => {
-        return products.reduce((total, product) => total + product.price, 0);
+        // Calculate total amount directly from cartItems
+        return cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
     };
 
     const createRazorpayOrder = (amount) => {
@@ -42,7 +45,7 @@ const Payment = () => {
         axios
             .request(config)
             .then((response) => {
-                console.log(JSON.stringify(response.data));
+                console.log(response.data);
                 handleRazorpayScreen(response.data.amount, response.data.order_id);
             })
             .catch((error) => {
@@ -58,7 +61,7 @@ const Payment = () => {
         }
 
         const options = {
-            key: 'rzp_live_yZoEMCF1nzkO4k', // Replace with your live/test Razorpay key
+            key: 'rzp_live_yZoEMCF1nzkO4k', // Replace with your Razorpay key
             amount: amount,
             currency: 'INR',
             name: 'WristWonders',
@@ -85,18 +88,25 @@ const Payment = () => {
                 <div className="w-full md:w-[50%] flex flex-col justify-between bg-gray-100">
                     <div className="mb-4">
                         <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
-                        {products.map((product) =>  (
-                            <div
-                                key={product.id}
-                                className="flex justify-between items-center bg-white shadow-md p-4 rounded-md mb-2"
-                            >
-                                <div>
-                                    <h2 className="text-lg font-semibold">{product.name}</h2>
-                                    <p className="text-gray-600">Price: ₹{product.price}</p>
+                        {!loading && cartItems.length > 0 ? (
+                            cartItems.map((item) => (
+                                <div
+                                    key={item._id}
+                                    className="flex justify-between items-center bg-white shadow-md p-4 rounded-md mb-2"
+                                >
+                                    <div>
+                                        <h2 className="text-lg font-semibold">{item.product.name}</h2>
+                                        <p className="text-gray-600">Price: ₹{item.product.price}</p>
+                                        <p className="text-gray-600">Quantity: {item.quantity}</p>
+                                    </div>
+                                    <p className="text-gray-800 font-bold">
+                                        ₹{item.product.price * item.quantity}
+                                    </p>
                                 </div>
-                                <p className="text-gray-800 font-bold">₹{product.price}</p>
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            <p>Loading...</p>
+                        )}
                     </div>
                     <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full md:w-[50%] bg-white shadow-md p-4">
                         <div className="flex justify-between items-center mb-4">
@@ -111,8 +121,8 @@ const Payment = () => {
                         </button>
                     </div>
                 </div>
-            </div></>
-
+            </div>
+        </>
     );
 };
 

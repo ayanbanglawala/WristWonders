@@ -3,29 +3,40 @@ import { useCart } from '../../context/CartContext';
 import useAddToCart from '../../Hooks/useAddToCart';
 import useCheckCart from '../../Hooks/useCheckCart';
 import { LuShoppingCart } from "react-icons/lu";
-import CartItem from '../home/CatItem';
+import CartItem from '../home/CatItem'; // Fixed typo in import
 
 const AddToCart = ({ productId }) => {
-  const { addToCart } = useCart(); // Access global addToCart
-  const { loading: addingToCart, addToCart: addItemToCart, existanceP } = useAddToCart();
+  const { addToCart } = useCart(); // Access global addToCart function
+  const { loading: addingToCart, addToCart: addItemToCart } = useAddToCart();
   const { loading: checkingCart, existance, checkCart, cartQuantity } = useCheckCart();
+
   const [isInCart, setIsInCart] = useState(false);
   const [quantitySet, setQuantitySet] = useState(1);
 
+  // Fetch cart status when the component mounts or when dependencies change
   useEffect(() => {
     const fetchCartStatus = async () => {
-      await checkCart({ productId });
-      setIsInCart(existance);
-      setQuantitySet(cartQuantity);
+      try {
+        await checkCart({ productId });
+        setIsInCart(existance); // Update based on fetched existence
+        setQuantitySet(cartQuantity);
+      } catch (error) {
+        console.error('Error fetching cart status:', error);
+      }
     };
     fetchCartStatus();
-  }, [checkCart, productId, existance]);
+  }, [checkCart, productId, existance, cartQuantity]);
 
+  // Handle adding item to cart
   const handleAddToCart = async () => {
-    const newItem = { id: productId }; // Replace with actual product data
-    await addItemToCart(newItem);
-    addToCart(newItem); // Update global state
-    setIsInCart(existanceP);
+    try {
+      const newItem = { id: productId }; // Replace with actual product data
+      await addItemToCart(newItem); // Add to cart using custom hook
+      addToCart(newItem); // Update global state
+      setIsInCart(true); // Update local state directly after successful addition
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
   };
 
   if (checkingCart) {
@@ -37,9 +48,9 @@ const AddToCart = ({ productId }) => {
   }
 
   return (
-    <>
+    <div>
       {isInCart ? (
-        <CartItem productId= {productId} cartQuantity={quantitySet} />
+        <CartItem productId={productId} cartQuantity={quantitySet==0 ? 1 : quantitySet} />
       ) : (
         <button
           className="btn text-white bg-blue-500 hover:bg-blue-600"
@@ -55,7 +66,7 @@ const AddToCart = ({ productId }) => {
           )}
         </button>
       )}
-    </>
+    </div>
   );
 };
 

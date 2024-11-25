@@ -38,6 +38,11 @@ const Hero = () => {
                 <LuShoppingCart className="text-xl" /> Add to cart
               </button>
             </Link>
+            <Link to="/products">
+              <button className="btn bg-blue-500 text-white hover:bg-blue-600 h-[50px]">
+                 All Products
+              </button>
+            </Link>
           </div>
         </div>
       </div>

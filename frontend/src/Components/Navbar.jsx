@@ -210,7 +210,7 @@ const Navbar = () => {
           </div>
 
           <div className="dropdown dropdown-end">
-            <Link to="/cart">
+            <a href="/cart">
               <div
                 tabIndex={0}
                 role="button"
@@ -236,7 +236,7 @@ const Navbar = () => {
                   </span>
                 </div>
               </div>
-            </Link>
+            </a>
           </div>
         </div>
       </div>

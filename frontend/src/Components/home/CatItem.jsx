@@ -22,7 +22,6 @@ const CartItem = ({ productId, cartQuantity }) => {
       if (updatedItem) {
         setQuantity(updatedItem.quantity);
         console.log(updatedItem);
-        
       }
     }
   }, [quantityNew, productId]);

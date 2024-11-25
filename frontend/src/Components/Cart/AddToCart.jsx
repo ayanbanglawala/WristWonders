@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useCart } from '../../context/CartContext';
+import { useCart } from '../../Context/CartContext';
 import useAddToCart from '../../Hooks/useAddToCart';
 import useCheckCart from '../../Hooks/useCheckCart';
 import { LuShoppingCart } from "react-icons/lu";

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../Components/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
-import useAddAddress from '../../hooks/useAddAddress'; // Adjust the path as needed
+import useAddAddress from '../../Hooks/useAddAddress'; // Adjust the path as needed
 import useMakePrimary from '../../Hooks/useMakePrimary';
 
 const AddressSelect = () => {

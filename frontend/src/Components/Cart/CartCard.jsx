@@ -13,7 +13,7 @@ const CartCard = ({ img, name, brand, price, quantity, productId }) => {
             {/* Product Image */}
             <div className="w-48 h-48 md:w-32 md:h-32 flex-shrink-0">
                 <img
-                    src={`http://localhost:5001/${img}`}
+                    src={`https://wristwonders-ewmk.onrender.com/${img}`}
                     alt={name}
                     className="w-full h-full object-cover rounded-lg"
                 />

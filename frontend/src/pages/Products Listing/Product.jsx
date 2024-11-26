@@ -34,7 +34,7 @@ const Product = () => {
         <div className="hero-content flex flex-col lg:flex-row w-full">
           {/* Image Card */}
           <div className="card bg-base-100 w-full lg:w-1/2 p-4 flex justify-center items-center">
-            <img src={`http://localhost:5001/${product.images}`} alt={product.name} className="rounded-lg object-contain h-full w-full" />
+            <img src={`https://wristwonders-ewmk.onrender.com/${product.images}`} alt={product.name} className="rounded-lg object-contain h-full w-full" />
           </div>
 
           {/* Text Card */}

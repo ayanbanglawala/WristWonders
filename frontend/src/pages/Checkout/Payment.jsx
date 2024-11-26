@@ -34,7 +34,7 @@ const Payment = () => {
 
         const config = {
             method: 'post',
-            url: 'http://localhost:5001/api/payments/initiate',
+            url: '/api/payments/initiate',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer APIKEY`,

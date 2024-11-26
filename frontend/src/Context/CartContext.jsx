@@ -1,5 +1,4 @@
-// CartContext.js
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const CartContext = createContext();
 
@@ -7,6 +6,15 @@ export const CartProvider = ({ children }) => {
   const [cartItemsAll, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const addToCart = (item) => {
+    setCartItems((prev) => [...prev, item]); // Update local state
+  };
+
+  const removeFromCart = (productId) => {
+    setCartItems((prev) => prev.filter(item => item.productId !== productId));
+    // You can also make a fetch call to remove the item from the server if needed.
+  };
 
   // Fetch cart items on initial load
   useEffect(() => {
@@ -31,14 +39,13 @@ export const CartProvider = ({ children }) => {
     };
 
     fetchCartItems();
-  }, []);
+  }, []); // Empty dependency array to run only once on mount
 
-  const addToCart = (item) => {
-    setCartItems((prev) => [...prev, item]); // Update local state
-  };
+
+
 
   return (
-    <CartContext.Provider value={{ cartItemsAll, addToCart, loading, error }}>
+    <CartContext.Provider value={{ cartItemsAll, addToCart, removeFromCart, loading, error }}>
       {children}
     </CartContext.Provider>
   );

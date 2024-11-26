@@ -4,12 +4,14 @@ import useAddToCart from '../../Hooks/useAddToCart';
 import useCheckCart from '../../Hooks/useCheckCart';
 import { LuShoppingCart } from "react-icons/lu";
 import CartItem from '../home/CatItem'; // Fixed typo in import
+import { useAuthContext } from '../../Context/AuthContext';
+import toast from 'react-hot-toast';
 
 const AddToCart = ({ productId }) => {
   const { addToCart } = useCart(); // Access global addToCart function
   const { loading: addingToCart, addToCart: addItemToCart } = useAddToCart();
   const { loading: checkingCart, existance, checkCart, cartQuantity } = useCheckCart();
-
+  const { authUser } = useAuthContext();
   const [isInCart, setIsInCart] = useState(false);
   const [quantitySet, setQuantitySet] = useState(1);
 
@@ -24,16 +26,23 @@ const AddToCart = ({ productId }) => {
         console.error('Error fetching cart status:', error);
       }
     };
-    fetchCartStatus();
+    if (authUser) {
+      fetchCartStatus();
+    }
   }, [checkCart, productId, existance, cartQuantity]);
 
   // Handle adding item to cart
   const handleAddToCart = async () => {
     try {
-      const newItem = { id: productId }; // Replace with actual product data
-      await addItemToCart(newItem); // Add to cart using custom hook
-      addToCart(newItem); // Update global state
-      setIsInCart(true); // Update local state directly after successful addition
+      if (authUser) {
+        const newItem = { id: productId }; // Replace with actual product data
+        await addItemToCart(newItem); // Add to cart using custom hook
+        addToCart(newItem); // Update global state
+        setIsInCart(true); // Update local state directly after successful addition
+      }
+      else{
+        toast.error("Login first!");
+      }
     } catch (error) {
       console.error('Error adding to cart:', error);
     }
@@ -50,7 +59,7 @@ const AddToCart = ({ productId }) => {
   return (
     <div>
       {isInCart ? (
-        <CartItem productId={productId} cartQuantity={quantitySet==0 ? 1 : quantitySet} />
+        <CartItem productId={productId} cartQuantity={quantitySet == 0 ? 1 : quantitySet} />
       ) : (
         <button
           className="btn text-white bg-blue-500 hover:bg-blue-600"

@@ -32,7 +32,7 @@ function App() {
         <Route path="/address" element={authUser ? <AddressSelect /> : <Navigate to="/login" />} />
         <Route path="/payment" element={authUser ? <Payment /> : <Navigate to="/login" />} />
         <Route path="/dashboard/addproduct" element={<AddProduct />} />
-        <Route path="/orders" element={<Orders />} />
+        <Route path="/orders" element={authUser ? <Orders /> :<Navigate to="/login"/>} />
       </Routes>
       <div><Toaster /></div>
     </div>

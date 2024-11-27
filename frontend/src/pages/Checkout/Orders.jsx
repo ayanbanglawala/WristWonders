@@ -1,39 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '../../Components/Navbar';
+import useFetchOrders from '../../Hooks/useFetchOrders';
 
 const Orders = () => {
-    const [orders, setOrders] = useState([]);
+    const { loading, allorders, fetchOrders } = useFetchOrders();
 
-    // Mock data fetched from an API or database
+    // Fetch orders when the component mounts
     useEffect(() => {
-        const fetchedOrders = [
-            {
-                _id: '67319703efc0ab53848aa467',
-                user: '6721c75e530b47650877e30d',
-                orderItems: [
-                    {
-                        product: '6723b2eda35e992ee97b7e59',
-                        quantity: 1,
-                        _id: '67319703efc0ab53848aa468',
-                    },
-                ],
-                shippingAddress: {
-                    street: 'CCC',
-                    city: 'BBB',
-                    state: 'AAA',
-                    country: 'AMERICAN',
-                    zipCode: '380022',
-                },
-                totalAmount: 1000,
-                status: 'Pending',
-                paymentStatus: 'Unpaid',
-                createdAt: '2024-11-11T05:32:51.802+00:00',
-                updatedAt: '2024-11-11T05:32:51.802+00:00',
-                __v: 0,
-            },
-        ];
-        setOrders(fetchedOrders);
-    }, []);
+        fetchOrders();
+    }, [fetchOrders]);
 
     return (
         <>
@@ -41,9 +16,15 @@ const Orders = () => {
             <div className="min-h-screen bg-gray-100 py-8">
                 <div className="container mx-auto px-4">
                     <h1 className="text-3xl font-bold text-gray-800 mb-6">Your Orders</h1>
-                    {orders.length > 0 ? (
+
+                    {/* Show loading spinner */}
+                    {loading ? (
+                        <div className="text-center text-gray-600">
+                            <p>Loading your orders...</p>
+                        </div>
+                    ) : allorders.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {orders.map((order) => (
+                            {allorders.map((order) => (
                                 <div
                                     key={order._id}
                                     className="bg-white shadow-md rounded-lg p-6"
@@ -90,12 +71,11 @@ const Orders = () => {
                                     <div className="border-t pt-4">
                                         <h3 className="font-semibold text-gray-800 mb-2">Order Items:</h3>
                                         {order.orderItems.map((item, index) => (
-                                            <p
-                                                key={index}
-                                                className="text-gray-800 flex justify-between"
-                                            >
-                                                Product ID: {item.product} (x{item.quantity})
-                                            </p>
+                                            <div key={index} className="flex justify-between">
+                                                <p className="text-gray-800">
+                                                    {item.product} (x{item.quantity})
+                                                </p>
+                                            </div>
                                         ))}
                                         <div className="flex justify-between font-bold text-gray-900 mt-4">
                                             <p>Total Amount:</p>
@@ -106,7 +86,9 @@ const Orders = () => {
                             ))}
                         </div>
                     ) : (
-                        <p className="text-gray-600 text-center">You have no orders yet.</p>
+                        <div className="text-center text-gray-600">
+                            <p>You have no orders yet. Start shopping now!</p>
+                        </div>
                     )}
                 </div>
             </div>

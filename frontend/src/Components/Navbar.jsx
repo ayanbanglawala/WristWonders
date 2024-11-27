@@ -13,10 +13,7 @@ const Navbar = () => {
   if (authUser == null) {
     isAuth = true;
   }
-  const { loading, cartItems, getCartItems } = useGetCartItems();
-  useEffect(() => {
-    getCartItems();
-  }, [getCartItems]);
+
   const { cartItemsAll } = useCart();
 
   return (
@@ -88,6 +85,12 @@ const Navbar = () => {
                 )}
 
                 {/* Categories Section */}
+                <h3 className="text-lg font-semibold mb-4">Orders</h3>
+                <ul className="menu menu-compact">
+                  <li>
+                    <Link to="/orders">Your Orders</Link>
+                  </li>
+                </ul>
                 <h3 className="text-lg font-semibold mb-4">Categories</h3>
                 <ul className="menu menu-compact">
                   <li>

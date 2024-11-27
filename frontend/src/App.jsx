@@ -15,6 +15,7 @@ import {Toaster} from 'react-hot-toast';
 import { Routes, Route, Navigate } from "react-router-dom"
 import AddProduct from './pages/Dashboard/AddProduct';
 import { useAuthContext } from './Context/AuthContext';
+import Orders from './pages/Checkout/Orders';
 
 function App() {
   const {authUser} = useAuthContext();
@@ -31,6 +32,7 @@ function App() {
         <Route path="/address" element={authUser ? <AddressSelect /> : <Navigate to="/login" />} />
         <Route path="/payment" element={authUser ? <Payment /> : <Navigate to="/login" />} />
         <Route path="/dashboard/addproduct" element={<AddProduct />} />
+        <Route path="/orders" element={<Orders />} />
       </Routes>
       <div><Toaster /></div>
     </div>

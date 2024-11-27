@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Navbar from '../../Components/Navbar';
 import useGetCartItems from '../../Hooks/useGetCartItems';
+import success from "../../assets/Images/Success.png";
+import { Link } from 'react-router-dom';
+import usePlaceOrder from '../../Hooks/usePlaceOrder';
 
 const Payment = () => {
     const { loading, cartItems, getCartItems } = useGetCartItems();
-
+    const [paymentSuccess, setPaymentSuccess] = useState(false); // Default to false
+    const {placeOrder} = usePlaceOrder();
     useEffect(() => {
-        // Fetch cart data when the component mounts
         getCartItems();
     }, [getCartItems]);
 
@@ -22,7 +25,6 @@ const Payment = () => {
     };
 
     const calculateTotal = () => {
-        // Calculate total amount directly from cartItems
         return cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
     };
 
@@ -45,7 +47,6 @@ const Payment = () => {
         axios
             .request(config)
             .then((response) => {
-                console.log(response.data);
                 handleRazorpayScreen(response.data.amount, response.data.order_id);
             })
             .catch((error) => {
@@ -61,7 +62,7 @@ const Payment = () => {
         }
 
         const options = {
-            key: 'rzp_live_yZoEMCF1nzkO4k', // Replace with your Razorpay key
+            key: 'rzp_live_yZoEMCF1nzkO4k',
             amount: amount,
             currency: 'INR',
             name: 'WristWonders',
@@ -70,6 +71,8 @@ const Payment = () => {
             order_id: order_id,
             handler: function (response) {
                 console.log('Payment successful', response);
+                setPaymentSuccess(true); // Show popup on success
+                placeOrder();
             },
             prefill: {
                 name: 'WristWonders',
@@ -77,6 +80,7 @@ const Payment = () => {
             },
             theme: { color: '#F4C430' },
         };
+
         const razorpay = new window.Razorpay(options);
         razorpay.open();
     };
@@ -122,6 +126,30 @@ const Payment = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Payment Success Popup */}
+            {paymentSuccess && (
+                <div className="overlay">
+
+                    <dialog id="my_modal_1" className="modal" open>
+                        <div className="modal-box flex justify-center items-center flex-col">
+                            <img src={success} alt="" width={100} />
+                            <h3 className="font-bold text-lg">Payment Successful!</h3>
+                            <p className="py-4">Thank you for your purchase.</p>
+                            <div className="modal-action">
+                                <Link to="/orders">
+                                    <button
+                                        className="btn bg-green-500 text-white hover:bg-green-600"
+                                        onClick={() => setPaymentSuccess(false)}
+                                    >
+                                        View Orders
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
+                    </dialog>
+                </div>
+            )}
         </>
     );
 };

@@ -61,6 +61,7 @@ export const placeOrder = async (req, res) => {
                 country: address.country,
                 zipCode: address.zipCode
             },
+            paymentStatus: "Paid"
         });
 
         // Clear the cart after placing the order

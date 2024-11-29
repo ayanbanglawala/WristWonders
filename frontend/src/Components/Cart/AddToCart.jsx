@@ -25,7 +25,7 @@ const AddToCart = ({ productId }) => {
       } catch (error) {
         console.error('Error fetching cart status:', error);
       }
-    };
+    }; 
     if (authUser) {
       fetchCartStatus();
     }

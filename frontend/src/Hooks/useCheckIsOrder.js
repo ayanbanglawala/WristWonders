@@ -7,12 +7,12 @@ const useCheckIsOrder = () => {
 
   const isOrdered = async (id) => {
     if (!id) return;
-
+    
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch(`/api/review/order/${id}`, {
+      const response = await fetch(`/api/products/review/order/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

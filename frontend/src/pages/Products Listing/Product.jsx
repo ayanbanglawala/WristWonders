@@ -13,7 +13,7 @@ const Product = () => {
   // Fetch product details when ID changes
   useEffect(() => {
     if (id) {
-      getProductDetails(id);
+      getProductDetails(id); 
       isOrdered(id); // Check if the product is ordered
     }
   }, [id]);

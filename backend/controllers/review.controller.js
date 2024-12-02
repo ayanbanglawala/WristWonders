@@ -72,13 +72,21 @@ export const isOrdered = async (req, res) => {
         const userId = req.user._id;
         const productId = req.params.id;
 
-        const order = await Order.find({ user: userId, product: productId });
+        // Use $elemMatch to check if any orderItem has the specified product
+        const order = await Order.findOne({
+            user: userId,
+            orderItems: { $elemMatch: { product: productId } }
+        });
+
+        // If no matching order is found
         if (!order) {
-            return res.status(404).json({ message: "Product not found in your Orders" });
+            return res.status(200).json({ isOrdered: false });
         }
-        res.json({ isOrdered: true });
+
+        // Return the found order details
+        res.status(200).json({ isOrdered: true });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal Server Error" });
     }
-}
+};

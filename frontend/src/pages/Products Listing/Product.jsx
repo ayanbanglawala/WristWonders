@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from '../../Components/Navbar';
 import useGetProductDetails from '../../Hooks/useGetProductDetails';
@@ -10,10 +10,21 @@ const Product = () => {
   const { loading: loadingProduct, product, getProductDetails } = useGetProductDetails();
   const { loading: loadingOrder, isOrder, isOrdered, error } = useCheckIsOrder();
 
+  const [rateProduct, setRateProduct] = useState(1);
+  const [comment, setComment] = useState("");
+  
+
+  const handleRateChange = (e) => {
+    e.preventDefault();
+    console.log("Rating:", rateProduct);
+    console.log("Comment:", comment);
+    alert("Thank you for your rating!");
+  };
+
   // Fetch product details when ID changes
   useEffect(() => {
     if (id) {
-      getProductDetails(id); 
+      getProductDetails(id);
       isOrdered(id); // Check if the product is ordered
     }
   }, [id]);
@@ -56,7 +67,29 @@ const Product = () => {
             ) : error ? (
               <p className="text-red-500">{error}</p>
             ) : isOrder ? (
-              <p className="text-green-500">You have already ordered this product.</p>
+              <div className="w-100 flex justify-center py-10 flex-col gap-4">
+                <p>Rate the product!</p>
+                <div className="rating flex w-100">
+                  <input type="radio" name="rating-2" className="mask mask-star-2 bg-blue-400" defaultChecked={rateProduct === 1} hidden onClick={() => setRateProduct(1)} />
+                  <input type="radio" name="rating-2" className="mask mask-star-2 bg-blue-400" onClick={() => setRateProduct(1)} />
+                  <input type="radio" name="rating-2" className="mask mask-star-2 bg-blue-400" onClick={() => setRateProduct(2)} />
+                  <input type="radio" name="rating-2" className="mask mask-star-2 bg-blue-400" onClick={() => setRateProduct(3)} />
+                  <input type="radio" name="rating-2" className="mask mask-star-2 bg-blue-400" onClick={() => setRateProduct(4)} />
+                  <input type="radio" name="rating-2" className="mask mask-star-2 bg-blue-400" onClick={() => setRateProduct(5)} />
+                </div>
+                <textarea
+                  className="textarea textarea-bordered"
+                  placeholder="Comment"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                ></textarea>
+                <button
+                  className="btn bg-blue-500 text-white hover:bg-blue-600"
+                  onClick={handleRateChange}
+                >
+                  Submit
+                </button>
+              </div>
             ) : (
               <p className="text-gray-500">You haven't ordered this product yet.</p>
             )}

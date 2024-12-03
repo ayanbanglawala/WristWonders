@@ -4,21 +4,29 @@ import Navbar from '../../Components/Navbar';
 import useGetProductDetails from '../../Hooks/useGetProductDetails';
 import useCheckIsOrder from '../../Hooks/useCheckIsOrder';
 import AddToCart from '../../Components/Cart/AddToCart';
+import useRateProduct from '../../Hooks/useRateProduct';
+import useGetRating from '../../Hooks/useGetRating';
 
 const Product = () => {
   const { id } = useParams();
   const { loading: loadingProduct, product, getProductDetails } = useGetProductDetails();
   const { loading: loadingOrder, isOrder, isOrdered, error } = useCheckIsOrder();
+  const {rateProduct1, loading} = useRateProduct();
+  const {loading1, ratings, getRatings} = useGetRating();
 
   const [rateProduct, setRateProduct] = useState(1);
   const [comment, setComment] = useState("");
+
+  const idOfProduct = id;
+  console.log(idOfProduct);
   
 
-  const handleRateChange = (e) => {
+  const handleRateChange = async(e) => {
     e.preventDefault();
+    await rateProduct1({rating: rateProduct, comment : comment, id : idOfProduct});
+    console.log("ID:", idOfProduct);
     console.log("Rating:", rateProduct);
     console.log("Comment:", comment);
-    alert("Thank you for your rating!");
   };
 
   // Fetch product details when ID changes
@@ -26,6 +34,10 @@ const Product = () => {
     if (id) {
       getProductDetails(id);
       isOrdered(id); // Check if the product is ordered
+      if (isOrder) {
+        getRatings({id : idOfProduct});
+        console.log(ratings, "000000000000000000");
+      }
     }
   }, [id]);
 

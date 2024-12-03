@@ -90,3 +90,17 @@ export const isOrdered = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+
+export const isRated = async (req, res)=>{
+    try {
+        const userId = req.user._id;
+        const productId = req.params.id;
+        const review = await Review.findOne({ user: userId, product: productId });
+        if(review) return res.status(200).json({ isRated: true, rating : review.rating, comment: review.comment });
+        return res.status(200).json({ isRated: false });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}

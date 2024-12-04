@@ -8,8 +8,12 @@ const WatchesCard = () => {
   useEffect(() => {
     getProducts();
   }, []);
+
   useEffect(() => {
-  }, [products]); // Logs when products state changes
+    // Logs when products state changes
+    console.log("Products updated:", products);
+  }, [products]);
+
   return (
     <div className="flex justify-center flex-col items-center">
       {loading && (
@@ -21,11 +25,16 @@ const WatchesCard = () => {
       <div className="container mx-auto my-5 flex flex-wrap justify-center gap-6 w-[100vw]">
         {products.map((product) => (
           <Card
+            key={product._id}
             productId={product._id}
             name={product.name}
             price={product.price}
             image={product.images[0]}
-            rating={product.ratings / product.numReviews}
+            rating={
+              product.numReviews > 0 
+                ? product.ratings / product.numReviews 
+                : 0
+            }
           />
         ))}
       </div>

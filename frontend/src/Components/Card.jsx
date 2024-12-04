@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MdOutlineWatch } from "react-icons/md";
 import { Link } from "react-router-dom";
 import AddToCart from "./Cart/AddToCart";
 import { FaStar } from "react-icons/fa";
 
-const Card = ({ image, name, price, productId, rating = 0 }) => {
+const Card = ({ image, name, price, productId, rating }) => {
+  useEffect(()=>{
+    if (rating === 0) {
+      console.log("SSS");
+    }
+    else{
+      console.log(rating);
+    }
+  })
+  
   return (
     <div className="card bg-base-100 w-80 lg:w-72 shadow-xl rounded-lg">
       <figure>

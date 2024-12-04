@@ -87,6 +87,7 @@ const Product = () => {
             <h1 className="text-4xl font-bold">{product?.name}</h1>
             <h2 className="text-2xl font-bold">{product?.brand}</h2>
             <div className="badge text-white bg-blue-500 h-8 gap-2 mt-5"><FaStar/> {product?.ratings}</div>
+            <h2 className="text-4xl font-bold">₹{product?.price}</h2>
             <p className="py-6">{product?.description}</p>
 
             {/* Add to Cart Button */}

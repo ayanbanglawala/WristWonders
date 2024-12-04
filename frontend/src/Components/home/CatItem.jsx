@@ -21,7 +21,6 @@ const CartItem = ({ productId, cartQuantity }) => {
       const updatedItem = quantityNew.find((item) => item.product === productId);
       if (updatedItem) {
         setQuantity(updatedItem.quantity);
-        console.log(updatedItem);
       }
     }
   }, [quantityNew, productId]);

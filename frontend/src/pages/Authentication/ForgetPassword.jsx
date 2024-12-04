@@ -25,8 +25,6 @@ const ChangePassword = () => {
             return
         }
 
-        // Proceed with the change password logic (API call, etc.)
-        console.log(formData)
     }
 
     return (

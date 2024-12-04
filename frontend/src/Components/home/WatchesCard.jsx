@@ -9,10 +9,6 @@ const WatchesCard = () => {
     getProducts();
   }, []);
 
-  useEffect(() => {
-    // Logs when products state changes
-    console.log("Products updated:", products);
-  }, [products]);
 
   return (
     <div className="flex justify-center flex-col items-center">

@@ -20,15 +20,11 @@ const Product = () => {
   const [comment, setComment] = useState("");
 
   const idOfProduct = id;
-  console.log(idOfProduct);
 
 
   const handleRateChange = async (e) => {
     e.preventDefault();
     await rateProduct1({ rating: rateProduct, comment: comment, id: idOfProduct });
-    console.log("ID:", idOfProduct);
-    console.log("Rating:", rateProduct);
-    console.log("Comment:", comment);
   };
 
   // Fetch product details when ID changes
@@ -55,7 +51,6 @@ const Product = () => {
     else {
       setRated(false);
     }
-    console.log(ratings.comment);
   }, [ratings]);
 
 

@@ -18,7 +18,6 @@ const AddProduct = () => {
         e.preventDefault();
         const file = e.target.files[0];
         setImage(file);
-        console.log(file);
     }
     // const [loading, setLoading] = useState(false);
 

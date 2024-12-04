@@ -5,14 +5,6 @@ import AddToCart from "./Cart/AddToCart";
 import { FaStar } from "react-icons/fa";
 
 const Card = ({ image, name, price, productId, rating }) => {
-  useEffect(()=>{
-    if (rating === 0) {
-      console.log("SSS");
-    }
-    else{
-      console.log(rating);
-    }
-  })
   
   return (
     <div className="card bg-base-100 w-80 lg:w-72 shadow-xl rounded-lg">

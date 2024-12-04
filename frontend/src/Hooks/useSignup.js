@@ -15,7 +15,6 @@ const useSignup = () => {
         }
         setLoading(true);
         try {
-            console.log("HELL");
             
             // Perform server-side validation and API call to signup user
             const response = await fetch('/api/auth/signup', {
@@ -26,7 +25,6 @@ const useSignup = () => {
                 body: JSON.stringify({ fName, lName, phone, email, password, cPassword }),
             });
             const data = await response.json();
-            console.log(data);
             if (response.ok) {
                 toast.success("Signup successful!")
                 navigate("/")

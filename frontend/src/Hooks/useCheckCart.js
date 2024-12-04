@@ -14,16 +14,8 @@ const useCheckCart = () => {
             const data = await response.json();
 
             if (!response.ok || data.error) {
-                // Handle HTTP errors (e.g., 404, 500)
-                // toast.error(data.error || 'Error checking cart');
                 setExistance(false);
             } else {
-                // Handle cart existence
-                if (data.exists) {
-                    console.log(" ");
-                } 
-
-                // Update state
                 setExistance(data.exists);
                 setCartQuantity(data.quantity);
                 

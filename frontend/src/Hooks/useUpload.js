@@ -32,7 +32,6 @@ const useUpload = () => {
             } else {
                 toast.error('Failed to upload product');
             }
-            console.log(formData);
             
         } catch (error) {
             toast.error(error.message);

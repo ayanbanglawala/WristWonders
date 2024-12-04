@@ -21,9 +21,6 @@ const ViewCart = () => {
     calculateTotalAmount();
   }, [cartItemsAll]); // Recalculate when `cartItemsAll` changes
 
-  useEffect(() => {
-    console.log('Cart Items:', cartItemsAll);
-  }, [cartItemsAll]);
 
 
   return (

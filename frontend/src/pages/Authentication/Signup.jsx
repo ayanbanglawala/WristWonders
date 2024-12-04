@@ -22,7 +22,6 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await signup(formData);
-    console.log("Signup process complete.");
   };
   return (
     <div className="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8">

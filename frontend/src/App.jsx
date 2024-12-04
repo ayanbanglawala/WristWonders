@@ -16,6 +16,7 @@ import { Routes, Route, Navigate } from "react-router-dom"
 import AddProduct from './pages/Dashboard/AddProduct';
 import { useAuthContext } from './Context/AuthContext';
 import Orders from './pages/Checkout/Orders';
+import Profile from './pages/Profile/Profile';
 
 function App() {
   const {authUser} = useAuthContext();
@@ -33,6 +34,7 @@ function App() {
         <Route path="/payment" element={authUser ? <Payment /> : <Navigate to="/login" />} />
         <Route path="/dashboard/addproduct" element={<AddProduct />} />
         <Route path="/orders" element={authUser ? <Orders /> :<Navigate to="/login"/>} />
+        <Route path="/profile" element={authUser ? <Profile /> :<Navigate to="/login"/>} />
       </Routes>
       <div><Toaster /></div>
     </div>

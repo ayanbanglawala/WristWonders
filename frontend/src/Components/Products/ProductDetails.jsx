@@ -6,7 +6,6 @@ import useGetProductDetails from '../../Hooks/useGetProductDetails';
 import { useParams } from 'react-router-dom';
 
 const ProductDetails = ({id}) => {
-    console.log(id); // Logging the ID for debugging
     const { loading, product, getProductDetails } = useGetProductDetails();
 
     useEffect(() => {
@@ -14,12 +13,8 @@ const ProductDetails = ({id}) => {
         if (id) {
             getProductDetails(id); // Pass the 'id' to get product details
         }
-        console.log(product, "00"); // Logs product data when it changes
     }, []); // Dependency array should include 'id' and 'getProductDetails'
 
-    useEffect(() => {
-        console.log(product, "00"); // Logs product data when it changes
-    }, [product]);
 
     const addtocart = false;
     return (

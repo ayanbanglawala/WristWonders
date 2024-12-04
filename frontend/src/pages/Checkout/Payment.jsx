@@ -70,7 +70,6 @@ const Payment = () => {
             image: 'https://www.shutterstock.com/image-vector/watches-frame-logo-design-watch-260nw-2331743355.jpg',
             order_id: order_id,
             handler: function (response) {
-                console.log('Payment successful', response);
                 setPaymentSuccess(true); // Show popup on success
                 placeOrder();
             },

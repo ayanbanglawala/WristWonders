@@ -20,7 +20,6 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         login(formData)  
-        console.log(formData)
     }
 
     return (

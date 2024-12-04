@@ -8,7 +8,6 @@ import { useCart } from "../Context/CartContext";
 
 const Navbar = () => {
   const { authUser } = useAuthContext();
-  console.log(authUser);
   let isAuth = false;
   if (authUser == null) {
     isAuth = true;

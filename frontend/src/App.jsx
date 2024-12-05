@@ -17,6 +17,7 @@ import AddProduct from './pages/Dashboard/AddProduct';
 import { useAuthContext } from './Context/AuthContext';
 import Orders from './pages/Checkout/Orders';
 import Profile from './pages/Profile/Profile';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 function App() {
   const {authUser} = useAuthContext();
@@ -35,6 +36,7 @@ function App() {
         <Route path="/dashboard/addproduct" element={<AddProduct />} />
         <Route path="/orders" element={authUser ? <Orders /> :<Navigate to="/login"/>} />
         <Route path="/profile" element={authUser ? <Profile /> :<Navigate to="/login"/>} />
+        <Route path="/dashboard" element={authUser ? <Dashboard /> :<Navigate to="/login"/>} />
       </Routes>
       <div><Toaster /></div>
     </div>

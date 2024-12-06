@@ -21,7 +21,8 @@ const useCheckIsOrder = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setIsOrder(data.isOrdered || false);
+        setIsOrder(data.isOrdered || false)
+        ;
       } else {
         const data = await response.json();
         setError(data.message || 'Something went wrong');

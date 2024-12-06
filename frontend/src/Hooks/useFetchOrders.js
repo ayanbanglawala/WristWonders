@@ -10,7 +10,7 @@ const useFetchOrders = () => {
     try {
       const response = await fetch('/api/orders');
       if (!response.ok) {
-        toast.error("Something went wrong!");
+        
         return;
       }
 

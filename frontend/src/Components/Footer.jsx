@@ -7,7 +7,7 @@ const Footer = () => {
       <aside>
         <img src={vector} className="w-8" alt="" />
         <p className="font-bold">
-          Wrist Wonders Ltd.
+          Wrist Wonders Pvt. Ltd.
           <br />
           Providing reliable tech since 2024
         </p>

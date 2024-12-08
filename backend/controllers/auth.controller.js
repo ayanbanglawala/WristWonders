@@ -117,8 +117,8 @@ export const addAddress = async (req, res) => {
         }
         const { name, phoneNumber, street, city, state, country, zipCode, isPrimary } = req.body;
         console.log(name, phoneNumber, street, city, state, country, zipCode, isPrimary);
-        
-        if ( !name || !phoneNumber || !street || !city || !state || !country || !zipCode ) {
+
+        if (!name || !phoneNumber || !street || !city || !state || !country || !zipCode) {
             return res.status(400).json({ error: "All fields are required" });
         }
         user.addresses.push({ name, phoneNumber, street, city, state, country, zipCode, isPrimary });
@@ -143,7 +143,7 @@ export const updateAddress = async (req, res) => {
             return res.status(404).json({ error: "Address not found" });
         }
         const addressIsPrimary = user.addresses[addressIndex].isPrimary;
-        user.addresses[addressIndex] = { street, city, state, country, zipCode, isPrimary:addressIsPrimary };
+        user.addresses[addressIndex] = { street, city, state, country, zipCode, isPrimary: addressIsPrimary };
         await user.save();
 
         res.status(200).json({ message: "Address updated successfully!", addressIsPrimary });
@@ -168,6 +168,26 @@ export const deleteAddress = async (req, res) => {
         await user.save();
         res.status(200).json({ message: "Address deleted successfully!" });
 
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server Error");
+    }
+}
+
+export const forgotpassword = async (req, res) => {
+    try {
+        const { email, password, cPassword } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        if (password !== cPassword) {
+            return res.status(400).json({ error: "Passwords do not match" });
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+        await user.save();
+        res.status(200).json({ message: "Password updated successfully!" });
     } catch (error) {
         console.error(error);
         res.status(500).send("Server Error");

@@ -1,40 +1,66 @@
-import React, { useState } from 'react'
-import logo from '../../assets/Images/Logo.png'
+import React, { useState } from 'react';
+import logo from '../../assets/Images/Logo.png';
+import useForgotPassword from '../../Hooks/useForgotPassword';
 
 const ChangePassword = () => {
     const [formData, setFormData] = useState({
-        phoneNumber: '',
+        email: '',
         password: '',
-        confirmPassword: '',
-    })
+        cPassword: '',
+    });
+
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
-        const { name, value } = e.target
+        const { name, value } = e.target;
         setFormData({
             ...formData,
             [name]: value,
-        })
-    }
+        });
+    };
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+    const validateForm = () => {
+        const newErrors = {};
 
-        // Check if passwords match
-        if (formData.password !== formData.confirmPassword) {
-            alert('Passwords do not match')
-            return
+        // Email validation
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = 'Enter a valid email address';
         }
 
-    }
+        // Password validation
+        if (formData.password.length < 8) {
+            newErrors.password = 'Password must be at least 8 characters long';
+        }
+
+        if (formData.password !== formData.cPassword) {
+            newErrors.cPassword = 'Passwords do not match';
+        }
+
+        return newErrors;
+    };
+
+    const { loading, forgotPassword } = useForgotPassword();
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setErrors({});
+
+        const validationErrors = validateForm();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        forgotPassword({
+            email: formData.email,
+            password: formData.password,
+            cPassword: formData.cPassword,
+        });
+    };
 
     return (
         <div className="flex min-h-[80vh] lg:min-h-[100vh] flex-1 flex-col justify-center items-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <img
-                    alt="Wrist Wonders"
-                    src={logo}
-                    className="mx-auto h-14 w-auto"
-                />
+                <img alt="Wrist Wonders" src={logo} className="mx-auto h-14 w-auto" />
                 <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
                     Change your password
                 </h2>
@@ -42,22 +68,23 @@ const ChangePassword = () => {
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Phone Number Field */}
+                    {/* Email Field */}
                     <div>
-                        <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-900">
-                            Phone Number
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-900">
+                            Email Address
                         </label>
                         <div className="mt-2">
                             <input
-                                id="phoneNumber"
-                                name="phoneNumber"
-                                type="text"
+                                id="email"
+                                name="email"
+                                type="email"
                                 required
-                                value={formData.phoneNumber}
+                                value={formData.email}
                                 onChange={handleChange}
                                 className="block w-full rounded-md border-0 py-1.5 p-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm"
                             />
                         </div>
+                        {errors.email && <p className="text-sm text-red-600 mt-1">{errors.email}</p>}
                     </div>
 
                     {/* Password Field */}
@@ -77,34 +104,39 @@ const ChangePassword = () => {
                                 className="block w-full rounded-md border-0 py-1.5 p-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm"
                             />
                         </div>
+                        {errors.password && <p className="text-sm text-red-600 mt-1">{errors.password}</p>}
                     </div>
 
                     {/* Confirm Password Field */}
                     <div>
-                        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-900">
+                        <label htmlFor="cPassword" className="block text-sm font-medium text-gray-900">
                             Confirm Password
                         </label>
                         <div className="mt-2">
                             <input
-                                id="confirmPassword"
-                                name="confirmPassword"
+                                id="cPassword"
+                                name="cPassword"
                                 type="password"
                                 required
-                                value={formData.confirmPassword}
+                                value={formData.cPassword}
                                 onChange={handleChange}
                                 autoComplete="new-password"
                                 className="block w-full rounded-md border-0 py-1.5 p-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm"
                             />
                         </div>
+                        {errors.cPassword && <p className="text-sm text-red-600 mt-1">{errors.cPassword}</p>}
                     </div>
 
                     {/* Change Password Button */}
                     <div>
                         <button
                             type="submit"
-                            className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                            disabled={loading}
+                            className={`flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
+                                loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-500'
+                            }`}
                         >
-                            Change Password
+                            {loading ? 'Changing...' : 'Change Password'}
                         </button>
                     </div>
                 </form>
@@ -117,7 +149,7 @@ const ChangePassword = () => {
                 </p>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default ChangePassword
+export default ChangePassword;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'  // Add useState import
 import logo from '../../assets/Images/Logo.png'
 import useLogin from '../../Hooks/useLogin'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -66,9 +67,9 @@ const Login = () => {
                                 Password
                             </label>
                             <div className="text-sm">
-                                <a href="#" className="font-semibold text-blue-600 hover:text-blue-500">
+                                <Link to="/forgotpassword" className="font-semibold text-blue-600 hover:text-blue-500">
                                     Forgot password?
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <div className="mt-2">
@@ -97,9 +98,9 @@ const Login = () => {
 
                 <p className="mt-10 text-center text-sm text-gray-500">
                     Not a member of Wrist Wonders?{' '}
-                    <a href="#" className="font-semibold text-blue-600 hover:text-blue-500">
+                    <Link to="/signup" className="font-semibold text-blue-600 hover:text-blue-500">
                         Register now!
-                    </a>
+                    </Link>
                 </p>
             </div>
         </div>

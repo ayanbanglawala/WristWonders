@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import logo from '../../assets/Images/Logo.png'
 import useSignup from '../../Hooks/useSignup.js'
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -161,9 +162,9 @@ const Signup = () => {
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Already Member of in Wrist Wonders?{' '}
-          <a href="#" className="font-semibold text-blue-600 hover:text-blue-500">
+          <Link to="/login" className="font-semibold text-blue-600 hover:text-blue-500">
             Login here
-          </a>
+          </Link>
         </p>
       </div>
     </div>

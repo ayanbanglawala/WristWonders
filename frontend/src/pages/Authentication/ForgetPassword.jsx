@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import logo from '../../assets/Images/Logo.png';
 import useForgotPassword from '../../Hooks/useForgotPassword';
+import { useNavigate } from 'react-router-dom';
 
 const ChangePassword = () => {
     const [formData, setFormData] = useState({
@@ -38,7 +39,7 @@ const ChangePassword = () => {
 
         return newErrors;
     };
-
+    const navigate = useNavigate();
     const { loading, forgotPassword } = useForgotPassword();
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -55,6 +56,7 @@ const ChangePassword = () => {
             password: formData.password,
             cPassword: formData.cPassword,
         });
+        navigate("/login");
     };
 
     return (

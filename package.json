@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "server": "nodemon backend/server.js",
-    "start" : "node backend/server.js",
-    "build" : "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+    "start": "node backend/server.js",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.2",
     "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.7",
     "path": "^0.12.7",
     "razorpay": "^2.9.5"
   }

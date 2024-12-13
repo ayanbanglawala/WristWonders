@@ -37,6 +37,7 @@ function App() {
         <Route path="/orders" element={authUser ? <Orders /> :<Navigate to="/login"/>} />
         <Route path="/profile" element={authUser ? <Profile /> :<Navigate to="/login"/>} />
         <Route path="/dashboard" element={authUser ? <Dashboard /> :<Navigate to="/login"/>} />
+        
       </Routes>
       <div><Toaster /></div>
     </div>
